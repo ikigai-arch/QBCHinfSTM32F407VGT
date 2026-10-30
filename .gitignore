@@ -1,0 +1,9 @@
+# Keil build output
+keil_hal/MDK-ARM/qbc_hinf/
+keil_hal/MDK-ARM/*.uvguix.*
+keil_hal/MDK-ARM/*.uvoptx.bak
+keil_hal/MDK-ARM/*.scvd
+keil_hal/MDK-ARM/RTE/
+keil_hal/MDK-ARM/DebugConfig/
+# GCC build output
+keil_hal/build/
