@@ -23,6 +23,8 @@ Perintah serial (USB, 115200, akhiri newline)
   v<angka>  vref target (V), contoh v50      e  mulai kontrol
   d         stop + reset / hapus FAULT       p  status
   k<angka>  kalibrasi pengali Vo, contoh k0.98
+  m<angka>  timpa vo dengan nilai manual (uji meja), contoh m50
+  a         kembali baca ADC asli
 
 Proteksi di firmware
   - Duty dijepit 0 .. 0,65
@@ -30,4 +32,4 @@ Proteksi di firmware
   - vref maksimum 150 V, naik dengan ramp
   - Setelah FAULT: kirim 'd' untuk reset
 
-Telemetri: T,ms,state,vref,vo,duty,cycles,overrun   (state 0=OFF 1=RUN 2=FAULT)
+Telemetri: T,ms,state,vref,vo,duty,cycles,overrun,manual   (state 0=OFF 1=RUN 2=FAULT)
