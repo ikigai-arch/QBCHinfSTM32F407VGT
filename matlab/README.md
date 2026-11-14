@@ -5,24 +5,28 @@ Converter, dari sintesis sampai Processor-in-the-Loop (PIL). Folder ini hanya be
 pengendali H∞. Pengendali pembanding tidak disertakan.
 
 Diperlukan MATLAB dengan **Robust Control Toolbox** (`augw`, `hinfsyn`), **Control System
-Toolbox**, dan untuk uji PIL **Instrument Control** (`serialport`). Model Simulink (MIL-1, MIL-2,
-SIL, PIL) dibangun dengan blok Simscape Electrical dan tidak disertakan di repositori ini.
+Toolbox**, **Simscape Electrical** (model plant), dan untuk uji PIL **Instrument Control** (`serialport`).
+
+Model Simulink yang disertakan: `MIL.slx` (MIL-1), `MIL2.slx` (MIL-2, kontroler diskret + unit delay),
+`SIL.slx` (blok C Function memanggil `controller_step()`), dan `PIL.slx` (blok *MATLAB System*
+`PILSerialController`). Setiap model memuat file `.mat` hasil tahap sebelumnya lewat callback InitFcn.
+Blok *Discrete PID Controller* yang ada di model berstatus *commented out* (sisa uji awal) dan tidak dipakai.
 
 ## Urutan menjalankan
 
 | Tahap | Folder | Skrip | Keluaran |
 |---|---|---|---|
-| 1. Sintesis (MIL-1) | `01_sintesis_MIL1/` | `hinf_synthesis_MIL1.m` | `Khinf_QBC_MIL1.mat`: K(s) orde 6, γ ≈ 0,61, bobot W₁–W₃, plot S/T/KS |
+| 1. Sintesis (MIL-1) | `01_sintesis_MIL1/` | `hinf_synthesis_MIL1.m` → `MIL.slx` | `Khinf_QBC_MIL1.mat`: K(s) orde 6, γ ≈ 0,61, bobot W₁–W₃, plot S/T/KS |
 | | | `mil_metrics.m` | metrik respons MIL-1 (rise/settling time, overshoot, riak) |
 | 2. Diskretisasi (MIL-2) | `02_diskretisasi_MIL2/` | `hinf_discretize_MIL2.m` | `Khinf_QBC_MIL2.mat`: K(z) Tustin, T<sub>s</sub> = 100 µs |
 | | | `hinf_dloop_check.m` | margin & stabilitas loop diskret K(z)·P(z)·z⁻¹ |
-| | | `mil_metrics2.m`, `mil_metrics2_vin.m` | metrik MIL-2: start-up, step beban, step V<sub>in</sub> ±10 % |
+| | | `MIL2.slx` + `mil_metrics2.m`, `mil_metrics2_vin.m` | metrik MIL-2: start-up, step beban, step V<sub>in</sub> ±10 % |
 | 3. SIL | `03_SIL/` | `export_controller_c.m` | `controller_coeffs.h` dari `Khinf_QBC_MIL2.mat` |
 | | | `gen_test_vectors.m` → `compare_via_mex.m` | uji unit `controller_step()` (MEX) terhadap `dlsim` |
-| | | `mil_metrics_sil.m`, `mil_metrics_sil_vin.m` | metrik SIL (blok C Function) dibanding MIL-2 |
+| | | `SIL.slx` + `mil_metrics_sil.m`, `mil_metrics_sil_vin.m` | metrik SIL (blok C Function) dibanding MIL-2 |
 | 4. PIL | `04_PIL/` | `pil_stm32/pil_stm32.ino` | firmware PIL lockstep untuk STM32F407VGT (USB CDC) |
 | | | `ujiC.m`, `ujiC2.m` | uji loopback dari MATLAB |
-| | | `PILSerialController.m` | blok *MATLAB System* untuk model PIL Simulink |
+| | | `PIL.slx` + `PILSerialController.m` | model PIL lockstep (blok *MATLAB System*) |
 
 ## Parameter desain
 
