@@ -47,7 +47,9 @@ Isi repositori:
 2. **Firmware kontroler** untuk STM32F407VGT (DevEBox) dalam dua versi, Arduino/STM32duino
    dan Keil/STM32 HAL. Kode kontrolernya (`controller_step.c`) sama persis dengan yang
    divalidasi pada MIL-2, SIL, dan PIL.
-3. **Pin map** yang mengikat firmware dan PCB ([`PINMAP.md`](PINMAP.md)).
+3. **Skrip MATLAB H∞** ([`matlab/`](matlab/)): sintesis mixed-sensitivity, diskretisasi,
+   ekspor kode C, uji unit SIL, dan PIL lockstep.
+4. **Pin map** yang mengikat firmware dan PCB ([`PINMAP.md`](PINMAP.md)).
 
 ## Spesifikasi sistem
 
@@ -81,6 +83,7 @@ Isi repositori:
 │   └── 3d/                        model 3D board (.glb) + penampil 3D di browser (index.html)
 ├── hil_stm32/                     firmware versi utama: Arduino IDE + STM32duino (USB CDC)
 ├── keil_hal/                      firmware versi cadangan: Keil uVision / STM32 HAL (USART3)
+├── matlab/                        skrip H∞: sintesis → diskretisasi (MIL-2) → SIL (MEX) → PIL
 ├── docs/img/                      gambar untuk dokumentasi
 └── PINMAP.md                      pin map DevEBox ↔ PCB QBC
 ```
@@ -161,7 +164,7 @@ Telemetri: `T,ms,state,vref,vo,duty,cycles,overrun` (state 0 = OFF, 1 = RUN, 2 =
 Petunjuk kompilasi dan flash ada di README masing-masing folder.
 
 > `controller_step.c/.h` dan `controller_coeffs.h` dihasilkan dari sintesis H∞ di MATLAB
-> dan **tidak boleh diubah manual**. File yang sama dipakai di MIL-2, SIL, PIL, dan board.
+> ([`matlab/`](matlab/)) dan **tidak boleh diubah manual**. File yang sama dipakai di MIL-2, SIL, PIL, dan board.
 
 ## Alur validasi MIL–SIL–PIL–hardware
 
