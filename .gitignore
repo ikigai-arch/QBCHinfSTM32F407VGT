@@ -7,3 +7,13 @@ keil_hal/MDK-ARM/RTE/
 keil_hal/MDK-ARM/DebugConfig/
 # GCC build output
 keil_hal/build/
+
+# KiCad
+*.kicad_prl
+*-backups/
+\#auto_saved_files\#
+_autosave-*
+fp-info-cache
+*.lck
+.history/
+*.bak

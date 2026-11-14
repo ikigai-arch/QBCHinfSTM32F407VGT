@@ -1,0 +1,9 @@
+(fp_lib_table
+	(version 7)
+	(lib (name "DCtoDC") (type "KiCad") (uri "${KIPRJMOD}/lib/lib_footprint/DCtoDC.pretty") (options "") (descr ""))
+	(lib (name "DIY CONN") (type "KiCad") (uri "${KIPRJMOD}/lib/lib_footprint/DIY CONN.pretty") (options "") (descr ""))
+	(lib (name "DIY HEATSINK") (type "KiCad") (uri "${KIPRJMOD}/lib/lib_footprint/DIY HEATSINK.pretty") (options "") (descr ""))
+	(lib (name "Induktor") (type "KiCad") (uri "${KIPRJMOD}/lib/lib_footprint/Induktor.pretty") (options "") (descr ""))
+	(lib (name "Shunt") (type "KiCad") (uri "${KIPRJMOD}/lib/lib_footprint/Shunt.pretty") (options "") (descr ""))
+	(lib (name "Trmnl") (type "KiCad") (uri "${KIPRJMOD}/lib/lib_footprint/Trmnl.pretty") (options "") (descr ""))
+)

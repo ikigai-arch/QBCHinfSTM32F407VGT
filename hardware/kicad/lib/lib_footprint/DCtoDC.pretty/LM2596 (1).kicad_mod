@@ -1,0 +1,184 @@
+(footprint "LM2596 (1)"
+	(version 20260206)
+	(generator "pcbnew")
+	(generator_version "10.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at 20.32 1.27 0)
+		(layer "F.SilkS")
+		(uuid "a88445ca-f1b6-49ac-8272-a8e0cf7531ac")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "LM2596"
+		(at 20.32 0 0)
+		(layer "F.Fab")
+		(uuid "c091b1eb-346a-417d-b197-3b235c61e51b")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "98166d01-2f67-426a-a1a6-7c22d66f05df")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "b18e02ae-ec67-49fc-9e7d-8fe179442585")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(attr through_hole)
+	(duplicate_pad_numbers_are_jumpers no)
+	(fp_line
+		(start -1.8415 -1.8415)
+		(end -1.8415 18.9865)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "0e2344c2-17ce-4c67-93dc-76e778a6e498")
+	)
+	(fp_line
+		(start -1.8415 18.9865)
+		(end 41.3385 18.9865)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "17dc9667-1738-401c-bdc8-c483dba6d163")
+	)
+	(fp_line
+		(start 41.3385 -1.8415)
+		(end -1.8415 -1.8415)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "0b7e8473-afc4-4851-b57d-57b339874cbf")
+	)
+	(fp_line
+		(start 41.3385 18.9865)
+		(end 41.3385 -1.8415)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "2660b436-a1a8-4b62-bcf8-e21052c247d7")
+	)
+	(pad "1" thru_hole roundrect
+		(at 0 0)
+		(size 3 3)
+		(drill 1.5)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(roundrect_rratio 0.25)
+		(uuid "be6d27c7-be89-4a45-8692-6b3268209798")
+	)
+	(pad "2" thru_hole roundrect
+		(at 0 17.145)
+		(size 3 3)
+		(drill 1.5)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(roundrect_rratio 0.25)
+		(uuid "369203ad-8af5-4f0b-8761-5fd0a26784d8")
+	)
+	(pad "3" thru_hole roundrect
+		(at 39.497 0)
+		(size 3 3)
+		(drill 1.5)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(roundrect_rratio 0.25)
+		(uuid "a655e0e2-1078-408a-bd07-5efa1bd19ef4")
+	)
+	(pad "4" thru_hole roundrect
+		(at 39.497 17.145)
+		(size 3 3)
+		(drill 1.5)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(roundrect_rratio 0.25)
+		(uuid "fa576efd-eeb0-4d1c-93d6-5e099b9b4586")
+	)
+	(embedded_fonts no)
+	(model "G:/Order/Pak Aji/Quadratic Boost Converter/Hardware/lib/3D-Models/LM2596_5V.stp"
+		(offset
+			(xyz 19.75 -16.625 2.46)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz -90 -0 90)
+		)
+	)
+	(model "${KISYS3DMOD}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_1x01_P2.54mm_Vertical.step"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+	(model "${KISYS3DMOD}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_1x01_P2.54mm_Vertical.step"
+		(offset
+			(xyz 39.497 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+	(model "${KISYS3DMOD}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_1x01_P2.54mm_Vertical.step"
+		(offset
+			(xyz 0 -17.145 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+	(model "${KISYS3DMOD}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_1x01_P2.54mm_Vertical.step"
+		(offset
+			(xyz 39.497 -17.145 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)

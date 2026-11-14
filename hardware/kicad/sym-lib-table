@@ -1,0 +1,13 @@
+(sym_lib_table
+	(version 7)
+	(lib (name "CB1A") (type "KiCad") (uri "${KIPRJMOD}/lib/lib_symbol/CB1A.kicad_sym") (options "") (descr ""))
+	(lib (name "DCtoDC_LM2596") (type "KiCad") (uri "${KIPRJMOD}/lib/lib_symbol/DCtoDC_LM2596.kicad_sym") (options "") (descr ""))
+	(lib (name "DIY Relay") (type "KiCad") (uri "${KIPRJMOD}/lib/lib_symbol/DIY Relay.kicad_sym") (options "") (descr ""))
+	(lib (name "DIY_MODULE") (type "KiCad") (uri "${KIPRJMOD}/lib/lib_symbol/DIY_MODULE.kicad_sym") (options "") (descr ""))
+	(lib (name "DM-OLED096-636") (type "KiCad") (uri "${KIPRJMOD}/lib/lib_symbol/DM-OLED096-636.kicad_sym") (options "") (descr ""))
+	(lib (name "NUCLEO-F411RE") (type "KiCad") (uri "${KIPRJMOD}/lib/lib_symbol/NUCLEO-F411RE.kicad_sym") (options "") (descr ""))
+	(lib (name "PWM_Controller") (type "KiCad") (uri "${KIPRJMOD}/lib/lib_symbol/PWM_Controller.kicad_sym") (options "") (descr ""))
+	(lib (name "Relay HK4100") (type "KiCad") (uri "${KIPRJMOD}/lib/lib_symbol/Relay HK4100.kicad_sym") (options "") (descr ""))
+	(lib (name "Shunt") (type "KiCad") (uri "${KIPRJMOD}/lib/lib_symbol/Shunt.kicad_sym") (options "") (descr ""))
+	(lib (name "Transformer_Flyback") (type "KiCad") (uri "${KIPRJMOD}/lib/lib_symbol/Transformer_Flyback.kicad_sym") (options "") (descr ""))
+)
