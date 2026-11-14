@@ -1,0 +1,1404 @@
+(kicad_sch
+	(version 20260306)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "59c30384-64dd-4743-b1b2-91e3bd7d7184")
+	(paper "A4")
+	(lib_symbols
+		(symbol "Mechanical:MountingHole"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "H"
+				(at 0 5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "MountingHole"
+				(at 0 3.175 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Mounting Hole without connection"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "mounting hole"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "MountingHole*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "MountingHole_0_1"
+				(circle
+					(center 0 0)
+					(radius 1.27)
+					(stroke
+						(width 1.27)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+	)
+	(wire
+		(pts
+			(xy 172.72 49.53) (xy 177.8 49.53)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "09761f27-5756-4ef2-90ad-8a4c17b3c778")
+	)
+	(wire
+		(pts
+			(xy 217.17 97.155) (xy 209.55 97.155)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0be84846-f2c0-4a73-93f8-da1c4b1c6fef")
+	)
+	(wire
+		(pts
+			(xy 213.36 49.53) (xy 209.55 49.53)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "15bc209d-de85-4f66-a546-83989f28e03c")
+	)
+	(wire
+		(pts
+			(xy 170.18 46.99) (xy 177.8 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "17430d4d-192c-46ec-8796-c5bd3cf1c022")
+	)
+	(wire
+		(pts
+			(xy 219.71 106.045) (xy 209.55 106.045)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1ee8696f-1d8e-44df-8fd1-883a502f6bb4")
+	)
+	(wire
+		(pts
+			(xy 214.63 90.805) (xy 214.63 53.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2ce3cf89-515c-4518-b4e6-4924da16a524")
+	)
+	(wire
+		(pts
+			(xy 215.9 55.88) (xy 215.9 93.345)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3864d733-bfc3-45e2-b2f6-aad9fed468ed")
+	)
+	(wire
+		(pts
+			(xy 165.1 52.07) (xy 172.72 52.07)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3c636856-f3ed-48ea-a078-02e8c69986a7")
+	)
+	(wire
+		(pts
+			(xy 220.98 66.04) (xy 220.98 103.505)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3db98e60-afa9-4bf5-961b-bd2b7e1d108f")
+	)
+	(wire
+		(pts
+			(xy 165.1 49.53) (xy 170.18 49.53)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "432a6cbd-e1f0-4eb7-afb5-1d089fd50463")
+	)
+	(wire
+		(pts
+			(xy 209.55 68.58) (xy 219.71 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "44d5251d-3a1b-49d5-92f5-22d398d97aa3")
+	)
+	(wire
+		(pts
+			(xy 218.44 99.695) (xy 209.55 99.695)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4888923a-2831-46db-a13f-d15556735d0f")
+	)
+	(wire
+		(pts
+			(xy 171.45 97.155) (xy 171.45 94.615)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4cb9b93d-d098-49c4-bd0a-490805392be1")
+	)
+	(wire
+		(pts
+			(xy 209.55 86.995) (xy 213.36 86.995)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "575a4342-f03d-4ff7-be21-8fc781d34005")
+	)
+	(wire
+		(pts
+			(xy 217.17 62.23) (xy 217.17 97.155)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5abc8ee8-7930-4711-b7c8-c17400e9e67c")
+	)
+	(wire
+		(pts
+			(xy 165.1 86.995) (xy 177.8 86.995)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6daff2e7-073a-4021-abbf-0569a8ead62b")
+	)
+	(wire
+		(pts
+			(xy 171.45 94.615) (xy 177.8 94.615)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "70e58d68-a0d1-4ea8-9f77-39345fa39a81")
+	)
+	(wire
+		(pts
+			(xy 209.55 84.455) (xy 212.09 84.455)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7522b7ce-8960-43f5-9f9b-6462cf1ac5f3")
+	)
+	(wire
+		(pts
+			(xy 209.55 55.88) (xy 215.9 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "87c7a0b0-7ca9-44bb-8a53-a810a5535586")
+	)
+	(wire
+		(pts
+			(xy 165.1 84.455) (xy 177.8 84.455)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "88ed80e7-1f1a-434a-aa48-a58241709758")
+	)
+	(wire
+		(pts
+			(xy 219.71 68.58) (xy 219.71 106.045)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8c72ff5e-aee7-4ac3-99a7-2abe6581efd3")
+	)
+	(wire
+		(pts
+			(xy 209.55 59.69) (xy 218.44 59.69)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8cf0016c-cfcb-47a0-a96f-767de182e551")
+	)
+	(wire
+		(pts
+			(xy 212.09 46.99) (xy 209.55 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8eeb7886-4ecd-4efa-9c8a-6cf11059772e")
+	)
+	(wire
+		(pts
+			(xy 213.36 86.995) (xy 213.36 49.53)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9266267d-acd6-4ed8-8409-4279543c6e7e")
+	)
+	(wire
+		(pts
+			(xy 218.44 59.69) (xy 218.44 99.695)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "94c483ac-a467-428c-b32a-28718ecf4cbc")
+	)
+	(wire
+		(pts
+			(xy 165.1 97.155) (xy 171.45 97.155)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "979f9bc0-9954-45ad-8420-6a272dc379f1")
+	)
+	(wire
+		(pts
+			(xy 170.18 46.99) (xy 170.18 49.53)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a31cdc5f-2fcd-4a2e-ab90-9494da9b36c4")
+	)
+	(wire
+		(pts
+			(xy 172.72 52.07) (xy 172.72 49.53)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ae8242cf-e31f-4978-bf3e-66b28c0bd53a")
+	)
+	(wire
+		(pts
+			(xy 165.1 89.535) (xy 177.8 89.535)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b15a208d-0561-43bc-aadf-edd6165a9c6f")
+	)
+	(wire
+		(pts
+			(xy 165.1 54.61) (xy 177.8 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "be2f0aa6-6c83-4782-b782-d69b6818d376")
+	)
+	(wire
+		(pts
+			(xy 209.55 66.04) (xy 220.98 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c5c7d887-36e0-49f3-9c03-fddbcb75eca0")
+	)
+	(wire
+		(pts
+			(xy 165.1 92.075) (xy 177.8 92.075)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d291d6d8-82f2-465d-bde6-a59fcd0f45a6")
+	)
+	(wire
+		(pts
+			(xy 209.55 90.805) (xy 214.63 90.805)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d47e8070-c3b5-4419-871e-96f7c1081a85")
+	)
+	(wire
+		(pts
+			(xy 215.9 93.345) (xy 209.55 93.345)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e23d94e0-9195-4f08-b0ba-2460b9049e7c")
+	)
+	(wire
+		(pts
+			(xy 212.09 84.455) (xy 212.09 46.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e73998e0-ac7b-4d18-b77b-346578543a5e")
+	)
+	(wire
+		(pts
+			(xy 220.98 103.505) (xy 209.55 103.505)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "eebf2e8e-a240-41f2-8b40-bc3b5c5e4214")
+	)
+	(wire
+		(pts
+			(xy 214.63 53.34) (xy 209.55 53.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f4ee5342-4593-487e-870d-0ae58f0c4fb0")
+	)
+	(wire
+		(pts
+			(xy 165.1 59.69) (xy 177.8 59.69)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fa9ef43e-35e8-4207-baa5-c057a2632bee")
+	)
+	(wire
+		(pts
+			(xy 209.55 62.23) (xy 217.17 62.23)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fcbf10f0-5089-4b1f-b43f-c9883e613ab5")
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 114.3 133.35 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "27a32431-7647-44b8-8382-6cf01093f6c4")
+		(property "Reference" "H1"
+			(at 116.84 132.0799 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MountingHole"
+			(at 116.84 134.6199 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
+			(at 114.3 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 114.3 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Mounting Hole without connection"
+			(at 114.3 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "Quadratic_Boost_Converter_v0.1"
+				(path "/59c30384-64dd-4743-b1b2-91e3bd7d7184"
+					(reference "H1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 114.3 139.7 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "4c0494fd-ad82-4252-96d5-6422366eb64f")
+		(property "Reference" "H3"
+			(at 116.84 138.4299 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MountingHole"
+			(at 116.84 140.9699 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
+			(at 114.3 139.7 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 114.3 139.7 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Mounting Hole without connection"
+			(at 114.3 139.7 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "Quadratic_Boost_Converter_v0.1"
+				(path "/59c30384-64dd-4743-b1b2-91e3bd7d7184"
+					(reference "H3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 139.7 139.7 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "a7e5cce6-ea62-4900-a8f8-bd87bcfae1cf")
+		(property "Reference" "H4"
+			(at 142.24 138.4299 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MountingHole"
+			(at 142.24 140.9699 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
+			(at 139.7 139.7 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 139.7 139.7 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Mounting Hole without connection"
+			(at 139.7 139.7 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "Quadratic_Boost_Converter_v0.1"
+				(path "/59c30384-64dd-4743-b1b2-91e3bd7d7184"
+					(reference "H4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 139.7 133.35 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b776bbb5-9440-49fb-8a0b-017be6869c4a")
+		(property "Reference" "H2"
+			(at 142.24 132.0799 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MountingHole"
+			(at 142.24 134.6199 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
+			(at 139.7 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 139.7 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Mounting Hole without connection"
+			(at 139.7 133.35 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "Quadratic_Boost_Converter_v0.1"
+				(path "/59c30384-64dd-4743-b1b2-91e3bd7d7184"
+					(reference "H2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(sheet
+		(at 177.8 44.45)
+		(size 31.75 31.75)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.3)
+			(type solid)
+			(color 132 0 0 1)
+		)
+		(fill
+			(color 255 255 194 1)
+		)
+		(uuid "1a9fe568-d5e7-417f-8b54-25b6a4f8989d")
+		(property "Sheetname" "High Voltage"
+			(at 177.8 43.2996 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 2 2)
+					(thickness 0.4)
+					(bold yes)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "high_voltage.kicad_sch"
+			(at 177.8 76.8584 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "I_OUT+" output
+			(at 209.55 66.04 0)
+			(uuid "6376f43e-5c37-44d8-b124-8043b50acddf")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "IN-" output
+			(at 209.55 55.88 0)
+			(uuid "346de785-07e4-49e5-8260-0dde0b2a81ba")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "O-" output
+			(at 209.55 49.53 0)
+			(uuid "5f73edff-4450-4eee-99a4-631db1c333f8")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "I_OUT-" output
+			(at 209.55 68.58 0)
+			(uuid "efe487e9-9551-4576-aeaf-7abb46c402a9")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "IN+" output
+			(at 209.55 53.34 0)
+			(uuid "cccfd906-bacb-4ee0-a551-3cd5d6ca8b07")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "O+" output
+			(at 209.55 46.99 0)
+			(uuid "ec09baf6-fcc3-41cb-8e74-41f94427f8b3")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "Relay_Input" input
+			(at 177.8 46.99 180)
+			(uuid "9683e1f9-dcc0-4e5b-868e-525084f714d3")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "I_IN-" output
+			(at 209.55 62.23 0)
+			(uuid "ac5ccace-c659-48a6-8cae-8684b8219023")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "I_IN+" output
+			(at 209.55 59.69 0)
+			(uuid "f4b7e3d2-a324-4c1c-bf76-a6551adb69bc")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "DRIVE_MOSFET" input
+			(at 177.8 59.69 180)
+			(uuid "72056fdc-0179-43f3-8f5e-b90451bb73d2")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "Relay_Output" input
+			(at 177.8 49.53 180)
+			(uuid "0e0a5b66-4ed5-4835-b5c6-04872fddbdd2")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "Fan" input
+			(at 177.8 54.61 180)
+			(uuid "b4966a59-acf9-4874-b35c-c0708f0944cb")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "Quadratic_Boost_Converter_v0.1"
+				(path "/59c30384-64dd-4743-b1b2-91e3bd7d7184"
+					(page "5")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 107.95 25.4)
+		(size 57.15 12.7)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.3)
+			(type solid)
+			(color 132 0 0 1)
+		)
+		(fill
+			(color 255 255 194 1)
+		)
+		(uuid "33f95672-7f90-4c39-8869-7f8955a4a991")
+		(property "Sheetname" "Power Supply"
+			(at 107.95 24.6146 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 2 2)
+					(thickness 0.4)
+					(bold yes)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "power_supply.kicad_sch"
+			(at 107.95 38.7584 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "Quadratic_Boost_Converter_v0.1"
+				(path "/59c30384-64dd-4743-b1b2-91e3bd7d7184"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 177.8 82.55)
+		(size 31.75 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.3)
+			(type solid)
+			(color 132 0 0 1)
+		)
+		(fill
+			(color 255 255 194 1)
+		)
+		(uuid "5914e521-2294-4825-a2a9-cf7bb3f3b491")
+		(property "Sheetname" "Analog"
+			(at 177.8 81.3996 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 2 2)
+					(thickness 0.4)
+					(bold yes)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "analog.kicad_sch"
+			(at 177.8 108.6084 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "I_OUT" output
+			(at 177.8 84.455 180)
+			(uuid "869cc321-3213-4014-82b3-d2df0fb5ee0e")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "V_IN" output
+			(at 177.8 89.535 180)
+			(uuid "0f284de3-17d7-4f95-ae80-073d1e64f389")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "V_OUT" output
+			(at 177.8 86.995 180)
+			(uuid "e394f59a-6a87-447b-9db9-1b909d08d42f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "INPUT-" input
+			(at 209.55 93.345 0)
+			(uuid "d7fce632-fcf5-4fbd-99f6-f4251eb155c0")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "CONV_GND2" input
+			(at 209.55 106.045 0)
+			(uuid "534a8770-d3d4-4446-a460-fd70534e7724")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "TEMP1" output
+			(at 177.8 94.615 180)
+			(uuid "bfd9984a-f1cc-4b7e-80e0-40f069f5b0cf")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "OUTPUT-" input
+			(at 209.55 86.995 0)
+			(uuid "d2640ec4-6954-418a-9e8a-adbe988fefd0")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "CONV_GND1" input
+			(at 209.55 99.695 0)
+			(uuid "b8b92c9a-546b-4f04-84ba-b03cdcf4f71f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "I_IN" output
+			(at 177.8 92.075 180)
+			(uuid "284732b9-9e7d-4358-ad34-2f67b98e1684")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "INPUT+" input
+			(at 209.55 90.805 0)
+			(uuid "8bb8fc0c-535c-421e-a917-a135b71a6095")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "IN_GND" input
+			(at 209.55 97.155 0)
+			(uuid "3ebc1129-7ece-4e22-8295-b20b6caa9e4a")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "OUTPUT+" input
+			(at 209.55 84.455 0)
+			(uuid "21620a4e-897e-4e5d-8405-8a199fb0b9cc")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "OUT_GND" input
+			(at 209.55 103.505 0)
+			(uuid "60a9bff7-09fb-4f59-95d2-d4335977e91d")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "Quadratic_Boost_Converter_v0.1"
+				(path "/59c30384-64dd-4743-b1b2-91e3bd7d7184"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 107.95 44.45)
+		(size 57.15 76.2)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.3)
+			(type solid)
+			(color 132 0 0 1)
+		)
+		(fill
+			(color 255 255 194 1)
+		)
+		(uuid "ca35e62e-36ea-47c4-9f89-1af24b755756")
+		(property "Sheetname" "Microcontroller"
+			(at 107.95 43.2996 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 2 2)
+					(thickness 0.4)
+					(bold yes)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "microcontroller.kicad_sch"
+			(at 107.95 121.3084 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "PB0{slash}ADC1_IN8" input
+			(at 165.1 99.695 0)
+			(uuid "03ef8bd8-625d-4954-b969-00559f1bf6b6")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "PE9{slash}TIM1_CH1" output
+			(at 165.1 62.23 0)
+			(uuid "91ba2bcb-f27f-4060-939e-3373b8b12e84")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "PA5{slash}ADC1_IN5" input
+			(at 165.1 92.075 0)
+			(uuid "b2b9c030-163c-461b-adf1-6f8de5213017")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "PA4{slash}ADC1_IN4" input
+			(at 165.1 89.535 0)
+			(uuid "cefee4fd-872c-4dbc-8bf9-ab4f317dfbce")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "PA7{slash}ADC1_IN7" input
+			(at 165.1 97.155 0)
+			(uuid "58aa012c-dc6d-4f5b-a7ab-9d29a95e63a6")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "PA6{slash}ADC1_IN6" input
+			(at 165.1 94.615 0)
+			(uuid "55745c48-1853-4091-b93d-98c3611bb5f6")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "PE6{slash}TIM9_CH2" output
+			(at 165.1 64.77 0)
+			(uuid "c9db78e3-c730-4e78-83e8-4394f313e01a")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "PE3{slash}GPIO_OUTPUT" output
+			(at 165.1 57.15 0)
+			(uuid "c1be19f1-d4aa-454c-89c2-aad5a5fa06bc")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "PC0{slash}GPIO_OUTPUT" output
+			(at 165.1 52.07 0)
+			(uuid "0ebde0e2-de8c-478e-8ea4-14c68b6d298b")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "PC2{slash}GPIO_OUTPUT" output
+			(at 165.1 46.99 0)
+			(uuid "a23d7436-8665-4d8b-8392-19d3314996ef")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "PA3{slash}ADC1_IN3" input
+			(at 165.1 86.995 0)
+			(uuid "9692884a-bf1a-47bb-bc57-6328d93e73b8")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "PA8{slash}TIM1_CH1" output
+			(at 165.1 59.69 0)
+			(uuid "24300289-af00-4628-9cfb-aec88b5f5d6a")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "PA2{slash}ADC1_IN2" input
+			(at 165.1 84.455 0)
+			(uuid "b99bf6fb-988b-4331-89ff-3dc6f87e15b0")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "PE0{slash}GPIO_OUTPUT" output
+			(at 165.1 54.61 0)
+			(uuid "830a698d-ce74-406a-aa0f-a73757716a9c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "PC1{slash}GPIO_OUTPUT" output
+			(at 165.1 49.53 0)
+			(uuid "a22c5498-4976-477b-9217-54bdf0401c28")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "Quadratic_Boost_Converter_v0.1"
+				(path "/59c30384-64dd-4743-b1b2-91e3bd7d7184"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)
