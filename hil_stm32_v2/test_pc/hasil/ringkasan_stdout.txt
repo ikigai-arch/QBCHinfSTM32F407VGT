@@ -1,0 +1,75 @@
+boot_safe   LOLOS   6 cek  boot aman: PWM/relai mati, tanpa fault palsu
+refuse      LOLOS  12 cek  perintah berbahaya ditolak di status yang salah, batas keras
+arm_seq     LOLOS   7 cek  urutan relai K1 -> 300 ms -> K2, disarm
+    info: Vo tanpa switching setelah arm = 15.58 V (Vin 18 V - dioda), iL1 puncak saat K1 menutup = 4.81 A
+ramp150     LOLOS  31 cek  ramp ke 150 V @135 Ohm: H-inf, PI-FR, MPSO-PI (set hw & model)
+    info: ramp150_hinf_hw: D tunak 0.7022, iL1 tunak 12.50 A, iL1 puncak 12.71 A, riak Vo 0.03 Vpp (rata-rata), settle 447 ms
+    info: ramp150_pi_hw: D tunak 0.7025, iL1 tunak 12.54 A, iL1 puncak 12.56 A, riak Vo 0.16 Vpp (rata-rata), settle 1490 ms
+    info: ramp150_mpso_hw: D tunak 0.7028, iL1 tunak 12.58 A, iL1 puncak 12.58 A, riak Vo 0.00 Vpp (rata-rata), settle 766 ms
+    info: ramp150_hinf_model: D tunak 0.6666, iL1 tunak 9.98 A, iL1 puncak 10.06 A, riak Vo 0.03 Vpp (rata-rata), settle 440 ms
+    info: ramp150_pi_model: D tunak 0.6670, iL1 tunak 10.02 A, iL1 puncak 10.02 A, riak Vo 0.07 Vpp (rata-rata), settle 1402 ms
+    info: ramp150_mpso_model: D tunak 0.6671, iL1 tunak 10.03 A, iL1 puncak 10.03 A, riak Vo 0.01 Vpp (rata-rata), settle 729 ms
+plant_acc   LOLOS   3 cek  akurasi integrator plant harness/SIM
+    info: plant model D 0,666 @18 V/135 Ohm: Vo 149.17 V, iL1 9.91 A
+    info: plant hw D 0,666 @18 V/135 Ohm: Vo 127.71 V, iL1 8.44 A
+load_step   LOLOS  13 cek  S2 (panduan 4.9): beban 135 -> 270 -> 135 Ohm
+    info: S2 hinf: 135 -> 270 Ohm: Vo 143.26..166.14 V, D tunak 0.6820, iL1 puncak 12.50 A
+    info: S2 pi: 135 -> 270 Ohm: Vo 150.69..170.91 V, D tunak 0.6830, iL1 puncak 12.58 A
+    info: S2 mpso: 135 -> 270 Ohm: Vo 150.01..171.57 V, D tunak 0.6824, iL1 puncak 12.58 A
+s2_mil      LOLOS   2 cek  S2 versi MIL-2 (Gambar 4.10): 135 -> 101 Ohm (info)
+    info: S2mil hinf: 135 -> 101 Ohm: TRIP OCP_IN_F  (iL1 puncak 20.05 A)
+    info: S2mil pi: 135 -> 101 Ohm: TRIP OCP_IN_S (iL1 puncak 18.63 A)
+    info: S2mil mpso: 135 -> 101 Ohm: TRIP OCP_IN_S (iL1 puncak 19.14 A)
+vref_step   LOLOS  13 cek  S1: Vref 150 -> 155 V + pin TRIG
+vin_step    LOLOS  13 cek  S3: Vin 18 -> 19,8 V dan 18 -> 16,2 V tanpa trip palsu
+    info: S3 hinf: Vin +10 %: Vo puncak 162.37 V (OVP 180 V; v1 165 V)
+    info: S3 hinf: Vin -10 %: Vo minimum 136.45 V, D tunak 0.7299, iL1 puncak 17.45 A
+    info: S3 pi: Vin +10 %: Vo puncak 166.22 V (OVP 180 V; v1 165 V)
+    info: S3 pi: Vin -10 %: Vo minimum 133.56 V, D tunak 0.7242, iL1 puncak 15.22 A
+    info: S3 mpso: Vin +10 %: Vo puncak 166.76 V (OVP 180 V; v1 165 V)
+    info: S3 mpso: Vin -10 %: Vo minimum 133.11 V, D tunak 0.7279, iL1 puncak 15.33 A
+vin_slew    LOLOS   2 cek  S3 arah kembali dengan slew PSU 0/1/10 ms (info)
+    info: H-inf Vin 16,2 -> 18 V dengan ramp 0 ms: iL1 puncak 18.10 A, faults 0x0
+    info: H-inf Vin 16,2 -> 18 V dengan ramp 1 ms: iL1 puncak 18.09 A, faults 0x0
+    info: H-inf Vin 16,2 -> 18 V dengan ramp 10 ms: iL1 puncak 17.16 A, faults 0x0
+ovp         LOLOS  10 cek  OVP (ambang diturunkan 152 V) + urutan buka relai + latch
+    info: Vo puncak selama uji OVP = 153.01 V
+estop_clr   LOLOS   4 cek  '!' darurat, clr ditolak sebelum relai terbuka
+ocp_out     LOLOS   2 cek  hubung singkat keluaran 5 Ohm
+    info: hubung singkat keluaran: fault pertama OCP_OUT_F, iL1 puncak 13.25 A, iL2 puncak 4.83 A
+ocp_in      LOLOS   4 cek  OCP masukan cepat/lambat dan keluaran (ambang diturunkan)
+otp         LOLOS   8 cek  overtemp, NTC lepas, kipas
+dsat        LOLOS   4 cek  duty jenuh (Vin jatuh 9 V) -> trip
+    info: hinf: Vin 9 V -> fault OCP_IN_F setelah 24.5 ms, iL1 puncak 20.35 A
+    info: pi: Vin 9 V -> fault OCP_IN_F setelah 178.6 ms, iL1 puncak 20.03 A
+    info: mpso: Vin 9 V -> fault OCP_IN_F setelah 84.5 ms, iL1 puncak 20.05 A
+antiwindup  LOLOS   2 cek  saturasi duty atas (Vin 6 V 100 ms) dan anti-windup
+    info: AW hinf aw on: setelah Vin pulih duty jenuh 1.5 ms, Vo puncak 145.27 V, iL1 puncak 22.13 A, faults OCP_IN_F
+    info: AW hinf aw off: setelah Vin pulih duty jenuh 1.6 ms, Vo puncak 156.32 V, iL1 puncak 21.73 A, faults OCP_IN_F
+    info: KESIMPULAN: anti-windup tidak bisa dibandingkan secara bermakna di plant ini: pada skenario yang membuat duty jenuh, OCP_IN_F trip tepat saat Vin pulih ke 18 V karena duty masih ~0,85 (iL1 puncak aw on 22.1 A, aw off 21.7 A; anti-windup conditional-integration tidak cukup cepat menurunkan duty); pada skenario lain (step Vref +-20 V, beban dilepas, S1-S3) duty tidak pernah jenuh. Pengaman utama = 
+    info: AW pi aw on: setelah Vin pulih duty jenuh 0.0 ms, Vo puncak 111.34 V, iL1 puncak 20.70 A, faults OCP_IN_F
+    info: AW mpso aw on: setelah Vin pulih duty jenuh 0.0 ms, Vo puncak 102.61 V, iL1 puncak 21.62 A, faults OCP_IN_F
+dsat_chat   LOLOS   2 cek  DSAT tetap trip walau duty jenuh berselang-seling
+switch      LOLOS   7 cek  perpindahan pengendali hinf -> pi -> mpso -> hinf
+    info: restart PI dari C2 bermuatan (Vo awal ~turun dari 150 V selama 300 ms): iL1 puncak 12.58 A
+link        LOLOS   6 cek  USB putus
+k2_fail     LOLOS   4 cek  K2 lepas saat jalan / tidak menutup saat arm
+    info: K2 lepas: Vo SEBENARNYA di C2 naik ke 154.1 V sebelum PWM mati (sensor melihat 0 V)
+ol          LOLOS   6 cek  open-loop T4 (D 0,654), jepit dmax
+    info: T4 OL D 0,654 @135 Ohm (set hw): Vo 121.00 V, iL1 7.49 A
+ol_noload   LOLOS   2 cek  open-loop tanpa beban
+    info: OL tanpa beban: Vo puncak 45.7 V sebelum trip
+pwmtest     LOLOS   7 cek  pwmtest T1/T2, K1 lengket
+    info: BATASAN: pwmtest force + K1 lengket: TIDAK TERDETEKSI setelah -1.0 ms, Vo C2 naik ke 69.3 V tanpa terlihat sensor. Karena itu default pwmtest menolak Vin > 2 V; force hanya bila K1 sudah dicek dengan multimeter.
+sim         LOLOS   5 cek  mode SIM on-chip
+    info: SIM + K1 lengket: F_SIM_REAL setelah 0.6 ms
+inrush      LOLOS   2 cek  arus start dengan vr 6000 V/s (info)
+    info: vr 6000 V/s (= MIL): iL1 puncak saat start 14.82 A, faults 0x0
+arm_brown   LOLOS   3 cek  sumber jatuh saat ARMING
+disarm_hv   LOLOS   3 cek  disarm dari 150 V
+    info: disarm dari 150 V: K1 buka 20.1 ms, K2 buka 32 ms, Vo saat K2 dibuka 30.1 V
+io          LOLOS   6 cek  antrean perintah, raw, capture, telemetri
+    info: capture S1: Vo maks di buffer 155.59 V
+cal         LOLOS   4 cek  perintah kalibrasi
+
+TOTAL: 30 uji, 193 cek, 0 gagal (0 uji gagal)

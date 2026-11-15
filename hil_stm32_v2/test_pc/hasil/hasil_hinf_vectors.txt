@@ -1,0 +1,9 @@
+U1 vs dlsim : 2000 sampel, max|u|=0.0003083, max|du|=1.83e-07 (0.06 % dari max|u|), rms=4.6e-08
+              referensi double vs dlsim: max|du|=4.32e-12 -> sisa galat U1 = float32
+U1: LOLOS (batas 1 % dari max|u|)
+U2 float vs double, galat realistis 20 s: max|u|=0.302, max|du|=0.000427 duty = 7.18 count PWM (ARR 16800)
+U2: INFO (bukan lolos/gagal): selisih open-loop akibat pembulatan float32 di state integrator
+    (A[0][0] = 0,99999). Di closed-loop selisih ini dikoreksi integrator; dampaknya diuji di harness.
+U3 ctrl_mux(aw off) vs controller_step+jepit: 0 dari 20000 sampel berbeda
+U3: LOLOS (bit-identik)
+HASIL: SEMUA LOLOS
