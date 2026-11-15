@@ -1,0 +1,1583 @@
+Harness uji PC firmware QBC v2 (hil_stm32_v2 0.9.1 (2026-11-15))
+Plant: model rata-rata qbc_sim.c, Vin 18 V, R 135 Ohm, set parasitik 'hw' kecuali disebut 'model'
+
+=== boot_safe: boot aman: PWM/relai mati, tanpa fault palsu ===
+      E,0,STATE,OFF
+  [LOLOS] status setelah boot = OFF (harus OFF)
+  [LOLOS] 2 s setelah boot dengan Vin 18 V: PWM/K1/K2 tidak pernah aktif (0 tick salah)
+  [LOLOS] Vo tetap 0 (maks 0.000 V)
+  [LOLOS] tidak ada fault palsu saat idle (faults=0x0)
+  [LOLOS] kipas mati saat idle 25 C
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== refuse: perintah berbahaya ditolak di status yang salah, batas keras ===
+      E,0,STATE,OFF
+    > ol                     OK
+    > cl                     OK
+    > d 0.5                  OK
+    > s 5                    OK
+      E,5,TOLAK,status_tidak_sesuai
+      E,5,TOLAK,status_tidak_sesuai
+      E,5,TOLAK,status_tidak_sesuai
+  [LOLOS] ol/cl/d/s di OFF tidak menyalakan PWM
+  [LOLOS] event TOLAK tercatat
+    > arm                    OK
+      E,16,TOLAK,Vin_di_luar_jendela
+  [LOLOS] arm ditolak saat Vin 3 V
+    > arm                    OK
+      E,22,TOLAK,Vin_di_luar_jendela
+  [LOLOS] arm ditolak saat Vin 24 V (> 22 V)
+    > arm                    OK
+      E,28,TOLAK,ada_tegangan_di_sisi_beban
+  [LOLOS] arm ditolak saat ada 12 V di sisi beban
+    > arm                    OK
+      E,33,STATE,ARMING
+      E,33,INFO,ARM_LANGKAH,1.00
+    > cl                     OK
+      E,35,TOLAK,status_tidak_sesuai
+  [LOLOS] cl saat ARMING ditolak
+      E,333,INFO,ARM_LANGKAH,2.00
+      E,433,STATE,ARMED
+    > v 0                    OK
+    > cl                     OK
+      E,433,TOLAK,vref_belum_diset(v <V>)
+  [LOLOS] cl dengan vref 0 ditolak
+    > v 200                  ERR v 0..160 V
+  [LOLOS] v 200 ditolak di parser (batas 160 V)
+    > dmax 0.9               ERR dmax 0..0.75
+  [LOLOS] dmax 0.9 ditolak (batas keras 0,75)
+    > lim ovp 190            ERR ovp harus 5.00..185.00 (batas keras)
+  [LOLOS] lim ovp 190 ditolak (batas keras 185 V)
+    > lim iinf 25            ERR iinf harus 0.20..21.00 (batas keras)
+  [LOLOS] lim iinf 25 ditolak (batas keras 21 A)
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== arm_seq: urutan relai K1 -> 300 ms -> K2, disarm ===
+      E,0,STATE,OFF
+    > arm                    OK
+      E,5,STATE,ARMING
+      E,5,INFO,ARM_LANGKAH,1.00
+      E,305,INFO,ARM_LANGKAH,2.00
+      E,405,STATE,ARMED
+  [LOLOS] status ARMED setelah arm (sekarang ARMED)
+  [LOLOS] K1 tertutup pada tick pertama (1)
+  [LOLOS] K2 baru tertutup 300.0 ms setelah K1 (>= 300 ms)
+  [LOLOS] PWM tetap mati di ARMED
+  [INFO ] Vo tanpa switching setelah arm = 15.58 V (Vin 18 V - dioda), iL1 puncak saat K1 menutup = 4.81 A
+  [LOLOS] arus inrush saat K1 menutup (4.8 A) < OCP cepat
+    > disarm                 OK
+      E,605,STATE,DISARM
+      E,625,STATE,OFF
+  [LOLOS] disarm -> OFF, relai terbuka
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== ramp150: ramp ke 150 V @135 Ohm: H-inf, PI-FR, MPSO-PI (set hw & model) ===
+      E,0,STATE,OFF
+    > ctrl hinf              OK
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150                  OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+  [LOLOS] ramp150_hinf_hw: tetap RUN_CL tanpa fault (state RUN_CL, faults 0x0)
+  [LOLOS] ramp150_hinf_hw: Vo rata-rata 149.66 V (150 +- 0,5)
+  [LOLOS] ramp150_hinf_hw: masuk +-2 % dalam 447 ms (ramp 300 V/s = 445 ms)
+  [LOLOS] ramp150_hinf_hw: Vo puncak 150.05 V < 156 V
+  [LOLOS] ramp150_hinf_hw: iL1 puncak 12.71 A < OCP cepat 20 A
+  [INFO ] ramp150_hinf_hw: D tunak 0.7022, iL1 tunak 12.50 A, iL1 puncak 12.71 A, riak Vo 0.03 Vpp (rata-rata), settle 447 ms
+      E,0,STATE,OFF
+    > ctrl pi                OK
+      E,5,INFO,CTRL,1.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150                  OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+  [LOLOS] ramp150_pi_hw: tetap RUN_CL tanpa fault (state RUN_CL, faults 0x0)
+  [LOLOS] ramp150_pi_hw: Vo rata-rata 149.84 V (150 +- 0,5)
+  [LOLOS] ramp150_pi_hw: masuk +-2 % dalam 1490 ms (ramp 300 V/s = 445 ms)
+  [LOLOS] ramp150_pi_hw: Vo puncak 149.91 V < 156 V
+  [LOLOS] ramp150_pi_hw: iL1 puncak 12.56 A < OCP cepat 20 A
+  [INFO ] ramp150_pi_hw: D tunak 0.7025, iL1 tunak 12.54 A, iL1 puncak 12.56 A, riak Vo 0.16 Vpp (rata-rata), settle 1490 ms
+      E,0,STATE,OFF
+    > ctrl mpso              OK
+      E,5,INFO,CTRL,2.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150                  OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+  [LOLOS] ramp150_mpso_hw: tetap RUN_CL tanpa fault (state RUN_CL, faults 0x0)
+  [LOLOS] ramp150_mpso_hw: Vo rata-rata 150.01 V (150 +- 0,5)
+  [LOLOS] ramp150_mpso_hw: masuk +-2 % dalam 766 ms (ramp 300 V/s = 445 ms)
+  [LOLOS] ramp150_mpso_hw: Vo puncak 150.01 V < 156 V
+  [LOLOS] ramp150_mpso_hw: iL1 puncak 12.58 A < OCP cepat 20 A
+  [INFO ] ramp150_mpso_hw: D tunak 0.7028, iL1 tunak 12.58 A, iL1 puncak 12.58 A, riak Vo 0.00 Vpp (rata-rata), settle 766 ms
+      E,0,STATE,OFF
+    > ctrl hinf              OK
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150                  OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+  [LOLOS] ramp150_hinf_model: tetap RUN_CL tanpa fault (state RUN_CL, faults 0x0)
+  [LOLOS] ramp150_hinf_model: Vo rata-rata 149.67 V (150 +- 0,5)
+  [LOLOS] ramp150_hinf_model: masuk +-2 % dalam 440 ms (ramp 300 V/s = 445 ms)
+  [LOLOS] ramp150_hinf_model: Vo puncak 149.73 V < 156 V
+  [LOLOS] ramp150_hinf_model: iL1 puncak 10.06 A < OCP cepat 20 A
+  [INFO ] ramp150_hinf_model: D tunak 0.6666, iL1 tunak 9.98 A, iL1 puncak 10.06 A, riak Vo 0.03 Vpp (rata-rata), settle 440 ms
+      E,0,STATE,OFF
+    > ctrl pi                OK
+      E,5,INFO,CTRL,1.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150                  OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+  [LOLOS] ramp150_pi_model: tetap RUN_CL tanpa fault (state RUN_CL, faults 0x0)
+  [LOLOS] ramp150_pi_model: Vo rata-rata 149.94 V (150 +- 0,5)
+  [LOLOS] ramp150_pi_model: masuk +-2 % dalam 1402 ms (ramp 300 V/s = 445 ms)
+  [LOLOS] ramp150_pi_model: Vo puncak 149.97 V < 156 V
+  [LOLOS] ramp150_pi_model: iL1 puncak 10.02 A < OCP cepat 20 A
+  [INFO ] ramp150_pi_model: D tunak 0.6670, iL1 tunak 10.02 A, iL1 puncak 10.02 A, riak Vo 0.07 Vpp (rata-rata), settle 1402 ms
+      E,0,STATE,OFF
+    > ctrl mpso              OK
+      E,5,INFO,CTRL,2.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150                  OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+  [LOLOS] ramp150_mpso_model: tetap RUN_CL tanpa fault (state RUN_CL, faults 0x0)
+  [LOLOS] ramp150_mpso_model: Vo rata-rata 150.01 V (150 +- 0,5)
+  [LOLOS] ramp150_mpso_model: masuk +-2 % dalam 729 ms (ramp 300 V/s = 445 ms)
+  [LOLOS] ramp150_mpso_model: Vo puncak 150.02 V < 156 V
+  [LOLOS] ramp150_mpso_model: iL1 puncak 10.03 A < OCP cepat 20 A
+  [INFO ] ramp150_mpso_model: D tunak 0.6671, iL1 tunak 10.03 A, iL1 puncak 10.03 A, riak Vo 0.01 Vpp (rata-rata), settle 729 ms
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== plant_acc: akurasi integrator plant harness/SIM ===
+  [LOLOS] plant model: 10 sub-langkah vs 1000: max |dVo| = 0.161 V (step D 0,60 -> 0,666)
+  [INFO ] plant model D 0,666 @18 V/135 Ohm: Vo 149.17 V, iL1 9.91 A
+  [LOLOS] plant hw: 10 sub-langkah vs 1000: max |dVo| = 0.100 V (step D 0,60 -> 0,666)
+  [INFO ] plant hw D 0,666 @18 V/135 Ohm: Vo 127.71 V, iL1 8.44 A
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== load_step: S2 (panduan 4.9): beban 135 -> 270 -> 135 Ohm ===
+      E,0,STATE,OFF
+    > ctrl hinf              OK
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+  [INFO ] S2 hinf: 135 -> 270 Ohm: Vo 143.26..166.14 V, D tunak 0.6820, iL1 puncak 12.50 A
+  [LOLOS] S2 hinf: 135 -> 270 Ohm tanpa trip (faults 0x0)
+  [LOLOS] S2 hinf: Vo kembali ke 149.67 V
+  [LOLOS] S2 hinf: overshoot 166.14 V di bawah OVP
+  [LOLOS] S2 hinf: 270 -> 135 Ohm tanpa trip, Vo min 135.55 V, iL1 puncak 14.53 A
+      E,0,STATE,OFF
+    > ctrl pi                OK
+      E,5,INFO,CTRL,1.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+  [INFO ] S2 pi: 135 -> 270 Ohm: Vo 150.69..170.91 V, D tunak 0.6830, iL1 puncak 12.58 A
+  [LOLOS] S2 pi: 135 -> 270 Ohm tanpa trip (faults 0x0)
+  [LOLOS] S2 pi: Vo kembali ke 150.52 V
+  [LOLOS] S2 pi: overshoot 170.91 V di bawah OVP
+  [LOLOS] S2 pi: 270 -> 135 Ohm tanpa trip, Vo min 133.18 V, iL1 puncak 12.46 A
+      E,0,STATE,OFF
+    > ctrl mpso              OK
+      E,5,INFO,CTRL,2.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+  [INFO ] S2 mpso: 135 -> 270 Ohm: Vo 150.01..171.57 V, D tunak 0.6824, iL1 puncak 12.58 A
+  [LOLOS] S2 mpso: 135 -> 270 Ohm tanpa trip (faults 0x0)
+  [LOLOS] S2 mpso: Vo kembali ke 150.01 V
+  [LOLOS] S2 mpso: overshoot 171.57 V di bawah OVP
+  [LOLOS] S2 mpso: 270 -> 135 Ohm tanpa trip, Vo min 132.50 V, iL1 puncak 12.57 A
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== s2_mil: S2 versi MIL-2 (Gambar 4.10): 135 -> 101 Ohm (info) ===
+      E,0,STATE,OFF
+    > ctrl hinf              OK
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+      E,3440,FAULT,OCP_IN_F,20.050
+      E,3440,STATE,FAULT,OCP_IN_F
+  [INFO ] S2mil hinf: 135 -> 101 Ohm: TRIP OCP_IN_F  (iL1 puncak 20.05 A)
+      E,0,STATE,OFF
+    > ctrl pi                OK
+      E,5,INFO,CTRL,1.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+      E,3854,FAULT,OCP_IN_S,15.500
+      E,3854,STATE,FAULT,OCP_IN_S
+      E,3854,FAULT,OCP_IN_S,15.500
+  [INFO ] S2mil pi: 135 -> 101 Ohm: TRIP OCP_IN_S (iL1 puncak 18.63 A)
+      E,0,STATE,OFF
+    > ctrl mpso              OK
+      E,5,INFO,CTRL,2.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+      E,3779,FAULT,OCP_IN_S,15.500
+      E,3779,STATE,FAULT,OCP_IN_S
+      E,3779,FAULT,OCP_IN_S,15.500
+  [INFO ] S2mil mpso: 135 -> 101 Ohm: TRIP OCP_IN_S (iL1 puncak 19.14 A)
+  [LOLOS] skenario MIL 135 -> 101 Ohm dicatat saja (lihat info)
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== vref_step: S1: Vref 150 -> 155 V + pin TRIG ===
+      E,0,STATE,OFF
+    > ctrl hinf              OK
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+    > s 5                    OK
+      E,3406,INFO,STEP,155.00
+  [LOLOS] S1 hinf: Vo -> 154.65 V setelah step +5 V
+  [LOLOS] S1 hinf: pin TRIG (PE6) HIGH selama 10 tick = 1.0 ms (1 ms)
+  [LOLOS] S1 hinf: event STEP tercatat
+  [LOLOS] S1 hinf: tanpa fault
+      E,0,STATE,OFF
+    > ctrl pi                OK
+      E,5,INFO,CTRL,1.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+    > s 5                    OK
+      E,3406,INFO,STEP,155.00
+  [LOLOS] S1 pi: Vo -> 154.71 V setelah step +5 V
+  [LOLOS] S1 pi: pin TRIG (PE6) HIGH selama 10 tick = 1.0 ms (1 ms)
+  [LOLOS] S1 pi: event STEP tercatat
+  [LOLOS] S1 pi: tanpa fault
+      E,0,STATE,OFF
+    > ctrl mpso              OK
+      E,5,INFO,CTRL,2.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+    > s 5                    OK
+      E,3406,INFO,STEP,155.00
+  [LOLOS] S1 mpso: Vo -> 154.99 V setelah step +5 V
+  [LOLOS] S1 mpso: pin TRIG (PE6) HIGH selama 10 tick = 1.0 ms (1 ms)
+  [LOLOS] S1 mpso: event STEP tercatat
+  [LOLOS] S1 mpso: tanpa fault
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== vin_step: S3: Vin 18 -> 19,8 V dan 18 -> 16,2 V tanpa trip palsu ===
+      E,0,STATE,OFF
+    > ctrl hinf              OK
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+  [LOLOS] S3 hinf: Vin 18 -> 19.8 V tanpa trip (faults 0x0)
+  [INFO ] S3 hinf: Vin +10 %: Vo puncak 162.37 V (OVP 180 V; v1 165 V)
+  [LOLOS] S3 hinf: Vin kembali 19.8 -> 18 V tanpa trip, Vo 149.65 V, iL1 puncak 13.97 A
+      E,0,STATE,OFF
+    > ctrl hinf              OK
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+  [LOLOS] S3 hinf: Vin 18 -> 16.2 V tanpa trip (faults 0x0)
+  [INFO ] S3 hinf: Vin -10 %: Vo minimum 136.45 V, D tunak 0.7299, iL1 puncak 17.45 A
+  [LOLOS] S3 hinf: Vin kembali 16.2 -> 18 V tanpa trip, Vo 149.65 V, iL1 puncak 18.11 A
+      E,0,STATE,OFF
+    > ctrl pi                OK
+      E,5,INFO,CTRL,1.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+  [LOLOS] S3 pi: Vin 18 -> 19.8 V tanpa trip (faults 0x0)
+  [INFO ] S3 pi: Vin +10 %: Vo puncak 166.22 V (OVP 180 V; v1 165 V)
+  [LOLOS] S3 pi: Vin kembali 19.8 -> 18 V tanpa trip, Vo 149.97 V, iL1 puncak 12.57 A
+      E,0,STATE,OFF
+    > ctrl pi                OK
+      E,5,INFO,CTRL,1.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+  [LOLOS] S3 pi: Vin 18 -> 16.2 V tanpa trip (faults 0x0)
+  [INFO ] S3 pi: Vin -10 %: Vo minimum 133.56 V, D tunak 0.7242, iL1 puncak 15.22 A
+  [LOLOS] S3 pi: Vin kembali 16.2 -> 18 V tanpa trip, Vo 150.02 V, iL1 puncak 18.84 A
+      E,0,STATE,OFF
+    > ctrl mpso              OK
+      E,5,INFO,CTRL,2.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+  [LOLOS] S3 mpso: Vin 18 -> 19.8 V tanpa trip (faults 0x0)
+  [INFO ] S3 mpso: Vin +10 %: Vo puncak 166.76 V (OVP 180 V; v1 165 V)
+  [LOLOS] S3 mpso: Vin kembali 19.8 -> 18 V tanpa trip, Vo 150.01 V, iL1 puncak 12.58 A
+      E,0,STATE,OFF
+    > ctrl mpso              OK
+      E,5,INFO,CTRL,2.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+  [LOLOS] S3 mpso: Vin 18 -> 16.2 V tanpa trip (faults 0x0)
+  [INFO ] S3 mpso: Vin -10 %: Vo minimum 133.11 V, D tunak 0.7279, iL1 puncak 15.33 A
+  [LOLOS] S3 mpso: Vin kembali 16.2 -> 18 V tanpa trip, Vo 150.01 V, iL1 puncak 19.10 A
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== vin_slew: S3 arah kembali dengan slew PSU 0/1/10 ms (info) ===
+      E,0,STATE,OFF
+    > ctrl hinf              OK
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+  [INFO ] H-inf Vin 16,2 -> 18 V dengan ramp 0 ms: iL1 puncak 18.10 A, faults 0x0
+      E,0,STATE,OFF
+    > ctrl hinf              OK
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+  [INFO ] H-inf Vin 16,2 -> 18 V dengan ramp 1 ms: iL1 puncak 18.09 A, faults 0x0
+      E,0,STATE,OFF
+    > ctrl hinf              OK
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+  [INFO ] H-inf Vin 16,2 -> 18 V dengan ramp 10 ms: iL1 puncak 17.16 A, faults 0x0
+  [LOLOS] dicatat saja
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== ovp: OVP (ambang diturunkan 152 V) + urutan buka relai + latch ===
+      E,0,STATE,OFF
+    > ctrl hinf              OK
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+    > lim ovp 152            OK ovp=152.000
+  [LOLOS] OVP 152 V belum trip di 150 V (riak < 2 V)
+    > s 5                    OK
+      E,3456,INFO,STEP,155.00
+      E,3465,FAULT,OVP,152.114
+      E,3465,STATE,FAULT,OVP
+      E,3465,FAULT,OVP,153.033
+  [LOLOS] trip OVP saat Vo melewati 152 V (faults 0x1)
+  [LOLOS] PWM mati 4 tick setelah Vo > ambang (<= 4)
+  [LOLOS] event FAULT,OVP tercatat
+  [INFO ] Vo puncak selama uji OVP = 153.01 V
+  [LOLOS] K1 terbuka 20.0 ms setelah trip
+  [LOLOS] K2 terbuka setelah K1 (32.5 ms setelah trip, Vo saat K2 dibuka 30.1 V)
+  [LOLOS] K2 dibuka saat Vo < 30 V (tidak memutus 150 V DC)
+    > ol                     OK
+    > arm                    OK
+      E,9456,TOLAK,status_tidak_sesuai
+      E,9456,TOLAK,status_tidak_sesuai
+  [LOLOS] fault latched: arm/ol ditolak sebelum clr
+    > clr                    OK
+      E,9461,STATE,OFF
+  [LOLOS] clr -> OFF
+    > limreset               OK
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== estop_clr: '!' darurat, clr ditolak sebelum relai terbuka ===
+      E,0,STATE,OFF
+    > ctrl hinf              OK
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+    > !                      OK DARURAT
+      E,3406,FAULT,USER,0.000
+      E,3406,STATE,FAULT,USER
+  [LOLOS] '!' -> PWM mati pada tick berikutnya, FAULT USER
+    > clr                    OK
+      E,3407,TOLAK,relai_belum_selesai_dibuka
+  [LOLOS] clr ditolak selama relai belum terbuka
+    > clr                    OK
+      E,9410,STATE,OFF
+  [LOLOS] clr diterima setelah urutan buka relai selesai
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== ocp_out: hubung singkat keluaran 5 Ohm ===
+      E,0,STATE,OFF
+    > ctrl hinf              OK
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+      E,3406,FAULT,OCP_OUT_F,5.500
+      E,3406,STATE,FAULT,OCP_OUT_F
+      E,3406,FAULT,OCP_OUT_F,5.500
+      E,3406,FAULT,OCP_OUT_F,5.500
+      E,3406,FAULT,OCP_OUT_F,5.500
+      E,3406,FAULT,OCP_OUT_F,5.500
+      E,3406,FAULT,OCP_OUT_F,5.500
+      E,3407,FAULT,OCP_OUT_F,5.500
+      E,3407,FAULT,OCP_OUT_F,5.500
+      E,3407,FAULT,OCP_OUT_F,5.500
+      E,3407,FAULT,OCP_OUT_F,5.500
+      E,3407,FAULT,OCP_OUT_F,5.500
+      E,3407,FAULT,OCP_OUT_F,5.296
+      E,3407,FAULT,OCP_OUT_F,5.070
+      E,3407,FAULT,OCP_OUT_F,4.884
+      E,3407,FAULT,OCP_OUT_F,4.721
+      E,3407,FAULT,OCP_OUT_F,4.556
+      E,3408,FAULT,OCP_OUT_F,4.374
+      E,3408,FAULT,OCP_OUT_F,4.165
+      E,3408,FAULT,OCP_OUT_F,3.931
+      E,3408,FAULT,OCP_OUT_F,3.676
+      E,3408,FAULT,OCP_OUT_F,3.406
+      E,3408,FAULT,OCP_OUT_F,3.143
+      E,3408,FAULT,OCP_OUT_F,2.898
+      E,3408,FAULT,OCP_OUT_F,2.689
+      E,3408,FAULT,OCP_OUT_F,2.522
+      E,3409,FAULT,OCP_OUT_F,2.747
+      E,3409,FAULT,OCP_OUT_F,2.819
+      E,3409,FAULT,OCP_OUT_F,2.869
+      E,3409,FAULT,OCP_OUT_F,2.892
+      E,3410,FAULT,OCP_OUT_F,2.896
+      E,3410,FAULT,OCP_OUT_F,2.880
+      E,3410,FAULT,OCP_OUT_F,2.855
+      E,3410,FAULT,OCP_OUT_F,2.826
+      E,3410,FAULT,OCP_OUT_F,2.800
+      E,3410,FAULT,OCP_OUT_F,2.790
+      E,3410,FAULT,OCP_OUT_F,2.792
+      E,3410,FAULT,OCP_OUT_F,2.812
+      E,3410,FAULT,OCP_OUT_F,2.845
+      E,3410,FAULT,OCP_OUT_F,2.889
+      E,3411,FAULT,OCP_OUT_F,2.943
+      E,3411,FAULT,OCP_OUT_F,2.999
+      E,3411,FAULT,OCP_OUT_F,3.049
+      E,3411,FAULT,OCP_OUT_F,3.088
+      E,3411,FAULT,OCP_OUT_F,3.116
+      E,3411,FAULT,OCP_OUT_F,3.132
+      E,3411,FAULT,OCP_OUT_F,3.131
+      E,3411,FAULT,OCP_OUT_F,3.117
+      E,3411,FAULT,OCP_OUT_F,3.096
+      E,3411,FAULT,OCP_OUT_F,3.069
+      E,3412,FAULT,OCP_OUT_F,3.045
+      E,3412,FAULT,OCP_OUT_F,3.019
+      E,3412,FAULT,OCP_OUT_F,3.000
+      E,3412,FAULT,OCP_OUT_F,2.986
+      E,3412,FAULT,OCP_OUT_F,2.983
+      E,3412,FAULT,OCP_OUT_F,2.990
+      E,3412,FAULT,OCP_OUT_F,3.000
+      E,3412,FAULT,OCP_OUT_F,3.018
+      E,3412,FAULT,OCP_OUT_F,3.033
+      E,3412,FAULT,OCP_OUT_F,3.052
+      E,3413,FAULT,OCP_OUT_F,3.062
+      E,3413,FAULT,OCP_OUT_F,3.069
+      E,3413,FAULT,OCP_OUT_F,3.070
+      E,3413,FAULT,OCP_OUT_F,3.065
+      E,3413,FAULT,OCP_OUT_F,3.056
+      E,3413,FAULT,OCP_OUT_F,3.041
+      E,3413,FAULT,OCP_OUT_F,3.029
+      E,3413,FAULT,OCP_OUT_F,3.011
+      E,3413,FAULT,OCP_OUT_F,3.000
+      E,3413,FAULT,OCP_OUT_F,2.992
+      E,3414,FAULT,OCP_OUT_F,2.986
+      E,3414,FAULT,OCP_OUT_F,2.988
+      E,3414,FAULT,OCP_OUT_F,2.990
+      E,3414,FAULT,OCP_OUT_F,2.995
+      E,3414,FAULT,OCP_OUT_F,3.005
+      E,3414,FAULT,OCP_OUT_F,3.017
+      E,3414,FAULT,OCP_OUT_F,3.022
+      E,3414,FAULT,OCP_OUT_F,3.030
+      E,3414,FAULT,OCP_OUT_F,3.034
+      E,3414,FAULT,OCP_OUT_F,3.034
+      E,3415,FAULT,OCP_OUT_F,3.034
+      E,3415,FAULT,OCP_OUT_F,3.029
+      E,3415,FAULT,OCP_OUT_F,3.023
+      E,3415,FAULT,OCP_OUT_F,3.018
+      E,3415,FAULT,OCP_OUT_F,3.011
+      E,3415,FAULT,OCP_OUT_F,3.009
+      E,3415,FAULT,OCP_OUT_F,3.005
+      E,3415,FAULT,OCP_OUT_F,3.000
+      E,3415,FAULT,OCP_OUT_F,3.003
+      E,3415,FAULT,OCP_OUT_F,3.005
+      E,3416,FAULT,OCP_OUT_F,3.010
+      E,3416,FAULT,OCP_OUT_F,3.013
+      E,3416,FAULT,OCP_OUT_F,3.019
+      E,3416,FAULT,OCP_OUT_F,3.021
+      E,3416,FAULT,OCP_OUT_F,3.025
+      E,3416,FAULT,OCP_OUT_F,3.026
+      E,3416,FAULT,OCP_OUT_F,3.027
+      E,3416,FAULT,OCP_OUT_F,3.026
+      E,3416,FAULT,OCP_OUT_F,3.026
+      E,3416,FAULT,OCP_OUT_F,3.023
+      E,3417,FAULT,OCP_OUT_F,3.017
+      E,3417,FAULT,OCP_OUT_F,3.014
+      E,3417,FAULT,OCP_OUT_F,3.014
+      E,3417,FAULT,OCP_OUT_F,3.010
+      E,3417,FAULT,OCP_OUT_F,3.011
+      E,3417,FAULT,OCP_OUT_F,3.011
+      E,3417,FAULT,OCP_OUT_F,3.014
+      E,3417,FAULT,OCP_OUT_F,3.015
+      E,3417,FAULT,OCP_OUT_F,3.018
+      E,3417,FAULT,OCP_OUT_F,3.017
+      E,3418,FAULT,OCP_OUT_F,3.022
+      E,3418,FAULT,OCP_OUT_F,3.023
+      E,3418,FAULT,OCP_OUT_F,3.021
+      E,3418,FAULT,OCP_OUT_F,3.022
+      E,3418,FAULT,OCP_OUT_F,3.023
+      E,3418,FAULT,OCP_OUT_F,3.019
+      E,3418,FAULT,OCP_OUT_F,3.021
+      E,3418,FAULT,OCP_OUT_F,3.017
+      E,3418,FAULT,OCP_OUT_F,3.017
+      E,3418,FAULT,OCP_OUT_F,3.017
+      E,3419,FAULT,OCP_OUT_F,3.015
+      E,3419,FAULT,OCP_OUT_F,3.014
+      E,3419,FAULT,OCP_OUT_F,3.013
+      E,3419,FAULT,OCP_OUT_F,3.014
+      E,3419,FAULT,OCP_OUT_F,3.017
+      E,3419,FAULT,OCP_OUT_F,3.018
+      E,3419,FAULT,OCP_OUT_F,3.017
+      E,3419,FAULT,OCP_OUT_F,3.018
+      E,3419,FAULT,OCP_OUT_F,3.021
+      E,3419,FAULT,OCP_OUT_F,3.021
+      E,3420,FAULT,OCP_OUT_F,3.018
+      E,3420,FAULT,OCP_OUT_F,3.019
+      E,3420,FAULT,OCP_OUT_F,3.018
+      E,3420,FAULT,OCP_OUT_F,3.019
+      E,3420,FAULT,OCP_OUT_F,3.018
+      E,3420,FAULT,OCP_OUT_F,3.018
+      E,3420,FAULT,OCP_OUT_F,3.018
+      E,3420,FAULT,OCP_OUT_F,3.017
+      E,3420,FAULT,OCP_OUT_F,3.017
+      E,3420,FAULT,OCP_OUT_F,3.018
+      E,3421,FAULT,OCP_OUT_F,3.017
+      E,3421,FAULT,OCP_OUT_F,3.015
+      E,3421,FAULT,OCP_OUT_F,3.017
+      E,3421,FAULT,OCP_OUT_F,3.019
+      E,3421,FAULT,OCP_OUT_F,3.017
+      E,3421,FAULT,OCP_OUT_F,3.018
+      E,3421,FAULT,OCP_OUT_F,3.018
+      E,3421,FAULT,OCP_OUT_F,3.019
+      E,3421,FAULT,OCP_OUT_F,3.017
+      E,3421,FAULT,OCP_OUT_F,3.018
+      E,3422,FAULT,OCP_OUT_F,3.018
+      E,3422,FAULT,OCP_OUT_F,3.019
+      E,3422,FAULT,OCP_OUT_F,3.017
+      E,3422,FAULT,OCP_OUT_F,3.017
+      E,3422,FAULT,OCP_OUT_F,3.015
+      E,3422,FAULT,OCP_OUT_F,3.017
+      E,3422,FAULT,OCP_OUT_F,3.015
+      E,3422,FAULT,OCP_OUT_F,3.018
+      E,3422,FAULT,OCP_OUT_F,3.018
+      E,3422,FAULT,OCP_OUT_F,3.019
+      E,3423,FAULT,OCP_OUT_F,3.019
+      E,3423,FAULT,OCP_OUT_F,3.019
+      E,3423,FAULT,OCP_OUT_F,3.017
+      E,3423,FAULT,OCP_OUT_F,3.017
+      E,3423,FAULT,OCP_OUT_F,3.019
+      E,3423,FAULT,OCP_OUT_F,3.019
+      E,3423,FAULT,OCP_OUT_F,3.017
+      E,3423,FAULT,OCP_OUT_F,3.017
+      E,3423,FAULT,OCP_OUT_F,3.019
+      E,3423,FAULT,OCP_OUT_F,3.017
+      E,3424,FAULT,OCP_OUT_F,3.015
+      E,3424,FAULT,OCP_OUT_F,3.017
+      E,3424,FAULT,OCP_OUT_F,3.017
+      E,3424,FAULT,OCP_OUT_F,3.017
+      E,3424,FAULT,OCP_OUT_F,3.015
+      E,3424,FAULT,OCP_OUT_F,3.017
+      E,3424,FAULT,OCP_OUT_F,3.019
+      E,3424,FAULT,OCP_OUT_F,3.019
+      E,3424,FAULT,OCP_OUT_F,3.017
+      E,3424,FAULT,OCP_OUT_F,3.018
+      E,3425,FAULT,OCP_OUT_F,3.017
+      E,3425,FAULT,OCP_OUT_F,3.017
+      E,3425,FAULT,OCP_OUT_F,3.017
+      E,3425,FAULT,OCP_OUT_F,3.017
+      E,3425,FAULT,OCP_OUT_F,3.017
+      E,3425,FAULT,OCP_OUT_F,3.019
+      E,3425,FAULT,OCP_OUT_F,3.019
+      E,3425,FAULT,OCP_OUT_F,3.018
+      E,3425,FAULT,OCP_OUT_F,3.017
+      E,3425,FAULT,OCP_OUT_F,3.018
+      E,3426,FAULT,OCP_OUT_F,3.018
+      E,3426,FAULT,OCP_OUT_F,3.019
+      E,3426,FAULT,OCP_OUT_F,3.018
+      E,3426,FAULT,OCP_OUT_F,3.017
+      E,3426,FAULT,OCP_OUT_F,3.018
+      E,3426,FAULT,OCP_OUT_F,3.015
+  [LOLOS] beban 5 Ohm -> trip dalam 0.3 ms (faults 0x8)
+  [INFO ] hubung singkat keluaran: fault pertama OCP_OUT_F, iL1 puncak 13.25 A, iL2 puncak 4.83 A
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== ocp_in: OCP masukan cepat/lambat dan keluaran (ambang diturunkan) ===
+      E,0,STATE,OFF
+    > ctrl hinf              OK
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+    > lim iinf 8             OK iinf=8.000
+      E,3406,FAULT,OCP_IN_F,12.507
+      E,3406,STATE,FAULT,OCP_IN_F
+  [LOLOS] lim iinf 8 A (iL1 ~12,6 A) -> OCP_IN_F dalam 0.3 ms
+      E,0,STATE,OFF
+    > ctrl hinf              OK
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+    > lim iins 11            OK iins=11.000
+      E,3406,FAULT,OCP_IN_S,12.445
+      E,3406,STATE,FAULT,OCP_IN_S
+  [LOLOS] lim iins 11 A -> OCP_IN_S (rata-rata lambat) setelah 0 ms
+      E,0,STATE,OFF
+    > ctrl hinf              OK
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+    > lim ioutf 1.0          OK ioutf=1.000
+      E,3406,FAULT,OCP_OUT_F,1.108
+      E,3406,STATE,FAULT,OCP_OUT_F
+  [LOLOS] lim ioutf 1,0 A (Io 1,11 A) -> OCP_OUT_F dalam 0.3 ms
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== otp: overtemp, NTC lepas, kipas ===
+      E,0,STATE,OFF
+    > ctrl hinf              OK
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+  [LOLOS] kipas ON saat PWM jalan
+  [LOLOS] 70 C belum trip
+      E,3510,FAULT,OTP,82.032
+      E,3510,STATE,FAULT,OTP
+  [LOLOS] 82 C -> OTP dalam 4.0 ms (suhu dibaca tiap 10 ms)
+      E,3510,FAULT,OTP,82.032
+      E,3510,FAULT,OTP,82.032
+      E,3510,FAULT,OTP,82.032
+      E,3510,FAULT,OTP,82.032
+      E,3510,FAULT,OTP,82.032
+      E,3510,FAULT,OTP,82.032
+      E,3510,FAULT,OTP,82.032
+      E,3510,FAULT,OTP,82.032
+      E,3511,FAULT,OTP,82.032
+      E,3511,FAULT,OTP,82.032
+      E,3511,FAULT,OTP,82.032
+      E,3511,FAULT,OTP,82.032
+      E,3511,FAULT,OTP,82.032
+      E,3511,FAULT,OTP,82.032
+      E,3511,FAULT,OTP,82.032
+      E,3511,FAULT,OTP,82.032
+      E,3511,FAULT,OTP,82.032
+      E,3511,FAULT,OTP,82.032
+      E,3512,FAULT,OTP,82.032
+      E,3512,FAULT,OTP,82.032
+      E,3512,FAULT,OTP,82.032
+      E,3512,FAULT,OTP,82.032
+      E,3512,FAULT,OTP,82.032
+      E,3512,FAULT,OTP,82.032
+      E,3512,FAULT,OTP,82.032
+      E,3512,FAULT,OTP,82.032
+      E,3512,FAULT,OTP,82.032
+      E,3512,FAULT,OTP,82.032
+      E,3513,FAULT,OTP,82.032
+      E,3513,FAULT,OTP,82.032
+      E,3513,FAULT,OTP,82.032
+      E,3513,FAULT,OTP,82.032
+      E,3513,FAULT,OTP,82.032
+      E,3513,FAULT,OTP,82.032
+      E,3513,FAULT,OTP,82.032
+      E,3513,FAULT,OTP,82.032
+      E,3513,FAULT,OTP,82.032
+      E,3513,FAULT,OTP,82.032
+      E,3514,FAULT,OTP,82.032
+      E,3514,FAULT,OTP,82.032
+      E,3514,FAULT,OTP,82.032
+      E,3514,FAULT,OTP,82.032
+      E,3514,FAULT,OTP,82.032
+      E,3514,FAULT,OTP,82.032
+      E,3514,FAULT,OTP,82.032
+      E,3514,FAULT,OTP,82.032
+      E,3514,FAULT,OTP,82.032
+      E,3514,FAULT,OTP,82.032
+      E,3515,FAULT,OTP,82.032
+      E,3515,FAULT,OTP,82.032
+      E,3515,FAULT,OTP,82.032
+      E,3515,FAULT,OTP,82.032
+      E,3515,FAULT,OTP,82.032
+      E,3515,FAULT,OTP,82.032
+      E,3515,FAULT,OTP,82.032
+      E,3515,FAULT,OTP,82.032
+      E,3515,FAULT,OTP,82.032
+      E,3515,FAULT,OTP,82.032
+      E,3516,FAULT,OTP,82.032
+      E,3516,FAULT,OTP,82.032
+      E,3516,FAULT,OTP,82.032
+      E,3516,FAULT,OTP,82.032
+      E,3516,FAULT,OTP,82.032
+      E,3516,FAULT,OTP,82.032
+      E,3516,FAULT,OTP,82.032
+      E,3516,FAULT,OTP,82.032
+      E,3516,FAULT,OTP,82.032
+      E,3516,FAULT,OTP,82.032
+      E,3517,FAULT,OTP,82.032
+      E,3517,FAULT,OTP,82.032
+      E,3517,FAULT,OTP,82.032
+      E,3517,FAULT,OTP,82.032
+      E,3517,FAULT,OTP,82.032
+      E,3517,FAULT,OTP,82.032
+      E,3517,FAULT,OTP,82.032
+      E,3517,FAULT,OTP,82.032
+      E,3517,FAULT,OTP,82.032
+      E,3517,FAULT,OTP,82.032
+      E,3518,FAULT,OTP,82.032
+      E,3518,FAULT,OTP,82.032
+      E,3518,FAULT,OTP,82.032
+      E,3518,FAULT,OTP,82.032
+      E,3518,FAULT,OTP,82.032
+      E,3518,FAULT,OTP,82.032
+      E,3518,FAULT,OTP,82.032
+      E,3518,FAULT,OTP,82.032
+      E,3518,FAULT,OTP,82.032
+      E,3518,FAULT,OTP,82.032
+      E,3519,FAULT,OTP,82.032
+      E,3519,FAULT,OTP,82.032
+      E,3519,FAULT,OTP,82.032
+      E,3519,FAULT,OTP,82.032
+      E,3519,FAULT,OTP,82.032
+      E,3519,FAULT,OTP,82.032
+      E,3519,FAULT,OTP,82.032
+      E,3519,FAULT,OTP,82.032
+      E,3519,FAULT,OTP,82.032
+      E,3519,FAULT,OTP,82.032
+      E,3520,FAULT,OTP,82.032
+      E,3520,FAULT,OTP,82.032
+  [LOLOS] kipas tetap ON setelah trip OTP (suhu > 35 C)
+      E,3520,FAULT,OTP,82.032
+      E,3520,FAULT,OTP,82.032
+      E,3520,FAULT,OTP,82.032
+      E,3520,FAULT,OTP,82.032
+      E,3520,FAULT,OTP,82.032
+      E,3520,FAULT,OTP,82.032
+      E,3520,FAULT,OTP,82.032
+      E,3520,FAULT,OTP,82.032
+      E,3521,FAULT,OTP,82.032
+      E,3521,FAULT,OTP,82.032
+      E,3521,FAULT,OTP,82.032
+      E,3521,FAULT,OTP,82.032
+      E,3521,FAULT,OTP,82.032
+      E,3521,FAULT,OTP,82.032
+      E,3521,FAULT,OTP,82.032
+      E,3521,FAULT,OTP,82.032
+      E,3521,FAULT,OTP,82.032
+      E,3521,FAULT,OTP,82.032
+      E,3522,FAULT,OTP,82.032
+      E,3522,FAULT,OTP,82.032
+      E,3522,FAULT,OTP,82.032
+      E,3522,FAULT,OTP,82.032
+      E,3522,FAULT,OTP,82.032
+      E,3522,FAULT,OTP,82.032
+      E,3522,FAULT,OTP,82.032
+      E,3522,FAULT,OTP,82.032
+      E,3522,FAULT,OTP,82.032
+      E,3522,FAULT,OTP,82.032
+      E,3523,FAULT,OTP,82.032
+      E,3523,FAULT,OTP,82.032
+      E,3523,FAULT,OTP,82.032
+      E,3523,FAULT,OTP,82.032
+      E,3523,FAULT,OTP,82.032
+      E,3523,FAULT,OTP,82.032
+      E,3523,FAULT,OTP,82.032
+      E,3523,FAULT,OTP,82.032
+      E,3523,FAULT,OTP,82.032
+      E,3523,FAULT,OTP,82.032
+      E,3524,FAULT,OTP,82.032
+      E,3524,FAULT,OTP,82.032
+      E,3524,FAULT,OTP,82.032
+      E,3524,FAULT,OTP,82.032
+      E,3524,FAULT,OTP,82.032
+      E,3524,FAULT,OTP,82.032
+      E,3524,FAULT,OTP,82.032
+      E,3524,FAULT,OTP,82.032
+      E,3524,FAULT,OTP,82.032
+      E,3524,FAULT,OTP,82.032
+      E,3525,FAULT,OTP,82.032
+      E,3525,FAULT,OTP,82.032
+      E,3525,FAULT,OTP,82.032
+      E,3525,FAULT,OTP,82.032
+      E,3525,FAULT,OTP,82.032
+      E,3525,FAULT,OTP,82.032
+      E,3525,FAULT,OTP,82.032
+      E,3525,FAULT,OTP,82.032
+      E,3525,FAULT,OTP,82.032
+      E,3525,FAULT,OTP,82.032
+      E,3526,FAULT,OTP,82.032
+      E,3526,FAULT,OTP,82.032
+      E,3526,FAULT,OTP,82.032
+      E,3526,FAULT,OTP,82.032
+      E,3526,FAULT,OTP,82.032
+      E,3526,FAULT,OTP,82.032
+      E,3526,FAULT,OTP,82.032
+      E,3526,FAULT,OTP,82.032
+      E,3526,FAULT,OTP,82.032
+      E,3526,FAULT,OTP,82.032
+      E,3527,FAULT,OTP,82.032
+      E,3527,FAULT,OTP,82.032
+      E,3527,FAULT,OTP,82.032
+      E,3527,FAULT,OTP,82.032
+      E,3527,FAULT,OTP,82.032
+      E,3527,FAULT,OTP,82.032
+      E,3527,FAULT,OTP,82.032
+      E,3527,FAULT,OTP,82.032
+      E,3527,FAULT,OTP,82.032
+      E,3527,FAULT,OTP,82.032
+      E,3528,FAULT,OTP,82.032
+      E,3528,FAULT,OTP,82.032
+      E,3528,FAULT,OTP,82.032
+      E,3528,FAULT,OTP,82.032
+      E,3528,FAULT,OTP,82.032
+      E,3528,FAULT,OTP,82.032
+      E,3528,FAULT,OTP,82.032
+      E,3528,FAULT,OTP,82.032
+      E,3528,FAULT,OTP,82.032
+      E,3528,FAULT,OTP,82.032
+      E,3529,FAULT,OTP,82.032
+      E,3529,FAULT,OTP,82.032
+      E,3529,FAULT,OTP,82.032
+      E,3529,FAULT,OTP,82.032
+      E,3529,FAULT,OTP,82.032
+      E,3529,FAULT,OTP,82.032
+      E,3529,FAULT,OTP,82.032
+      E,3529,FAULT,OTP,82.032
+      E,3529,FAULT,OTP,82.032
+      E,3529,FAULT,OTP,82.032
+      E,3530,FAULT,OTP,82.032
+      E,3530,FAULT,OTP,82.032
+      E,3530,FAULT,OTP,82.032
+      E,3530,FAULT,OTP,82.032
+      E,3530,FAULT,OTP,82.032
+      E,3530,FAULT,OTP,82.032
+      E,3530,FAULT,OTP,82.032
+      E,3530,FAULT,OTP,82.032
+      E,3530,FAULT,OTP,82.032
+      E,3530,FAULT,OTP,82.032
+      E,3531,FAULT,OTP,82.032
+      E,3531,FAULT,OTP,82.032
+      E,3531,FAULT,OTP,82.032
+      E,3531,FAULT,OTP,82.032
+      E,3531,FAULT,OTP,82.032
+      E,3531,FAULT,OTP,82.032
+      E,3531,FAULT,OTP,82.032
+      E,3531,FAULT,OTP,82.032
+      E,3531,FAULT,OTP,82.032
+      E,3531,FAULT,OTP,82.032
+      E,3532,FAULT,OTP,82.032
+      E,3532,FAULT,OTP,82.032
+      E,3532,FAULT,OTP,82.032
+      E,3532,FAULT,OTP,82.032
+      E,3532,FAULT,OTP,82.032
+      E,3532,FAULT,OTP,82.032
+      E,3532,FAULT,OTP,82.032
+      E,3532,FAULT,OTP,82.032
+      E,3532,FAULT,OTP,82.032
+      E,3532,FAULT,OTP,82.032
+      E,3533,FAULT,OTP,82.032
+      E,3533,FAULT,OTP,82.032
+      E,3533,FAULT,OTP,82.032
+      E,3533,FAULT,OTP,82.032
+      E,3533,FAULT,OTP,82.032
+      E,3533,FAULT,OTP,82.032
+      E,3533,FAULT,OTP,82.032
+      E,3533,FAULT,OTP,82.032
+      E,3533,FAULT,OTP,82.032
+      E,3533,FAULT,OTP,82.032
+      E,3534,FAULT,OTP,82.032
+      E,3534,FAULT,OTP,82.032
+      E,3534,FAULT,OTP,82.032
+      E,3534,FAULT,OTP,82.032
+      E,3534,FAULT,OTP,82.032
+      E,3534,FAULT,OTP,82.032
+      E,3534,FAULT,OTP,82.032
+      E,3534,FAULT,OTP,82.032
+      E,3534,FAULT,OTP,82.032
+      E,3534,FAULT,OTP,82.032
+      E,3535,FAULT,OTP,82.032
+      E,3535,FAULT,OTP,82.032
+      E,3535,FAULT,OTP,82.032
+      E,3535,FAULT,OTP,82.032
+      E,3535,FAULT,OTP,82.032
+      E,3535,FAULT,OTP,82.032
+      E,3535,FAULT,OTP,82.032
+      E,3535,FAULT,OTP,82.032
+      E,3535,FAULT,OTP,82.032
+      E,3535,FAULT,OTP,82.032
+      E,3536,FAULT,OTP,82.032
+      E,3536,FAULT,OTP,82.032
+      E,3536,FAULT,OTP,82.032
+      E,3536,FAULT,OTP,82.032
+      E,3536,FAULT,OTP,82.032
+      E,3536,FAULT,OTP,82.032
+      E,3536,FAULT,OTP,82.032
+      E,3536,FAULT,OTP,82.032
+      E,3536,FAULT,OTP,82.032
+      E,3536,FAULT,OTP,82.032
+      E,3537,FAULT,OTP,82.032
+      E,3537,FAULT,OTP,82.032
+      E,3537,FAULT,OTP,82.032
+      E,3537,FAULT,OTP,82.032
+      E,3537,FAULT,OTP,82.032
+      E,3537,FAULT,OTP,82.032
+      E,3537,FAULT,OTP,82.032
+      E,3537,FAULT,OTP,82.032
+      E,3537,FAULT,OTP,82.032
+      E,3537,FAULT,OTP,82.032
+      E,3538,FAULT,OTP,82.032
+      E,3538,FAULT,OTP,82.032
+      E,3538,FAULT,OTP,82.032
+      E,3538,FAULT,OTP,82.032
+      E,3538,FAULT,OTP,82.032
+      E,3538,FAULT,OTP,82.032
+      E,3538,FAULT,OTP,82.032
+      E,3538,FAULT,OTP,82.032
+      E,3538,FAULT,OTP,82.032
+      E,3538,FAULT,OTP,82.032
+      E,3539,FAULT,OTP,82.032
+      E,3539,FAULT,OTP,82.032
+      E,3539,FAULT,OTP,82.032
+      E,3539,FAULT,OTP,82.032
+      E,3539,FAULT,OTP,82.032
+      E,3539,FAULT,OTP,82.032
+      E,3539,FAULT,OTP,82.032
+      E,3539,FAULT,OTP,82.032
+      E,3539,FAULT,OTP,82.032
+      E,3539,FAULT,OTP,82.032
+      E,3540,FAULT,OTP,82.032
+      E,3540,FAULT,OTP,82.032
+      E,3540,FAULT,OTP,82.032
+      E,3540,FAULT,OTP,82.032
+      E,3540,FAULT,OTP,82.032
+      E,3540,FAULT,OTP,82.032
+      E,3540,FAULT,OTP,82.032
+      E,3540,FAULT,OTP,82.032
+      E,3540,FAULT,OTP,82.032
+      E,3540,FAULT,OTP,82.032
+      E,3541,FAULT,OTP,82.032
+      E,3541,FAULT,OTP,82.032
+      E,3541,FAULT,OTP,82.032
+      E,3541,FAULT,OTP,82.032
+      E,3541,FAULT,OTP,82.032
+      E,3541,FAULT,OTP,82.032
+      E,3541,FAULT,OTP,82.032
+      E,3541,FAULT,OTP,82.032
+      E,3541,FAULT,OTP,82.032
+    > clr                    OK
+      E,9520,STATE,OFF
+    > arm                    OK
+      E,9542,TOLAK,suhu_terlalu_tinggi
+  [LOLOS] arm ditolak di 78 C (> tmax-5)
+    > arm                    OK
+      E,9567,TOLAK,NTC_tidak_terbaca
+  [LOLOS] arm ditolak saat NTC lepas
+    > ctrl hinf              OK
+      E,9592,INFO,CTRL,0.00
+    > arm                    OK
+      E,9593,STATE,ARMING
+      E,9593,INFO,ARM_LANGKAH,1.00
+      E,9893,INFO,ARM_LANGKAH,2.00
+      E,9993,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,9993,STATE,RUN_CL
+      E,13000,FAULT,NTC,0.000
+      E,13000,STATE,FAULT,NTC
+  [LOLOS] NTC lepas saat jalan -> F_NTC dalam 6.9 ms
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== dsat: duty jenuh (Vin jatuh 9 V) -> trip ===
+      E,0,STATE,OFF
+    > ctrl hinf              OK
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+      E,3430,FAULT,OCP_IN_F,20.351
+      E,3430,STATE,FAULT,OCP_IN_F
+  [LOLOS] hinf: Vin jatuh ke 9 V -> trip dalam 24.5 ms (faults 0x2)
+  [INFO ] hinf: Vin 9 V -> fault OCP_IN_F setelah 24.5 ms, iL1 puncak 20.35 A
+      E,0,STATE,OFF
+    > ctrl pi                OK
+      E,5,INFO,CTRL,1.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+      E,3584,FAULT,OCP_IN_F,20.034
+      E,3584,STATE,FAULT,OCP_IN_F
+  [LOLOS] pi: Vin jatuh ke 9 V -> trip dalam 178.6 ms (faults 0x2)
+  [INFO ] pi: Vin 9 V -> fault OCP_IN_F setelah 178.6 ms, iL1 puncak 20.03 A
+      E,0,STATE,OFF
+    > ctrl mpso              OK
+      E,5,INFO,CTRL,2.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+      E,3490,FAULT,OCP_IN_F,20.044
+      E,3490,STATE,FAULT,OCP_IN_F
+  [LOLOS] mpso: Vin jatuh ke 9 V -> trip dalam 84.5 ms (faults 0x2)
+  [INFO ] mpso: Vin 9 V -> fault OCP_IN_F setelah 84.5 ms, iL1 puncak 20.05 A
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== antiwindup: saturasi duty atas (Vin 6 V 100 ms) dan anti-windup ===
+      E,0,STATE,OFF
+    > aw on                  OK
+    > lim dsat 200           OK dsat=200 ms
+    > ctrl hinf              OK
+      E,5,INFO,AW,1.00
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+      E,3507,FAULT,OCP_IN_F,22.000
+      E,3507,STATE,FAULT,OCP_IN_F
+      E,3527,INFO,K2_DIBUKA_C13_MASIH_BERMUATAN,125.33
+  [INFO ] AW hinf aw on: setelah Vin pulih duty jenuh 1.5 ms, Vo puncak 145.27 V, iL1 puncak 22.13 A, faults OCP_IN_F
+      E,0,STATE,OFF
+    > aw off                 OK
+    > lim dsat 200           OK dsat=200 ms
+    > ctrl hinf              OK
+      E,5,INFO,AW,0.00
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+      E,3507,FAULT,OCP_IN_F,21.737
+      E,3507,STATE,FAULT,OCP_IN_F
+      E,3528,INFO,K2_DIBUKA_C13_MASIH_BERMUATAN,134.66
+  [INFO ] AW hinf aw off: setelah Vin pulih duty jenuh 1.6 ms, Vo puncak 156.32 V, iL1 puncak 21.73 A, faults OCP_IN_F
+  [INFO ] KESIMPULAN: anti-windup tidak bisa dibandingkan secara bermakna di plant ini: pada skenario yang membuat duty jenuh, OCP_IN_F trip tepat saat Vin pulih ke 18 V karena duty masih ~0,85 (iL1 puncak aw on 22.1 A, aw off 21.7 A; anti-windup conditional-integration tidak cukup cepat menurunkan duty); pada skenario lain (step Vref +-20 V, beban dilepas, S1-S3) duty tidak pernah jenuh. Pengaman utama = 
+  [LOLOS] dicatat saja (lihat info)
+      E,0,STATE,OFF
+    > aw on                  OK
+    > lim dsat 200           OK dsat=200 ms
+    > ctrl pi                OK
+      E,5,INFO,AW,1.00
+      E,5,INFO,CTRL,1.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+      E,3509,FAULT,OCP_IN_F,20.705
+      E,3509,STATE,FAULT,OCP_IN_F
+      E,3529,INFO,K2_DIBUKA_C13_MASIH_BERMUATAN,96.03
+  [INFO ] AW pi aw on: setelah Vin pulih duty jenuh 0.0 ms, Vo puncak 111.34 V, iL1 puncak 20.70 A, faults OCP_IN_F
+      E,0,STATE,OFF
+    > aw on                  OK
+    > lim dsat 200           OK dsat=200 ms
+    > ctrl mpso              OK
+      E,5,INFO,AW,1.00
+      E,5,INFO,CTRL,2.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+      E,3509,FAULT,OCP_IN_F,21.619
+      E,3509,STATE,FAULT,OCP_IN_F
+      E,3529,INFO,K2_DIBUKA_C13_MASIH_BERMUATAN,88.53
+  [INFO ] AW mpso aw on: setelah Vin pulih duty jenuh 0.0 ms, Vo puncak 102.61 V, iL1 puncak 21.62 A, faults OCP_IN_F
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== dsat_chat: DSAT tetap trip walau duty jenuh berselang-seling ===
+      E,0,STATE,OFF
+    > ctrl hinf              OK
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+      E,3526,FAULT,DSAT,0.850
+      E,3526,STATE,FAULT,DSAT
+  [LOLOS] Vin 6 V @1350 Ohm (duty jenuh berselang-seling) -> F_DSAT setelah 120.6 ms (faults 0x400)
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== switch: perpindahan pengendali hinf -> pi -> mpso -> hinf ===
+      E,0,STATE,OFF
+    > ctrl hinf              OK
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+    > ctrl pi                OK
+      E,3406,TOLAK,PWM_masih_jalan
+  [LOLOS] ctrl pi ditolak saat RUN_CL
+    > stop                   OK
+      E,3408,STATE,ARMED
+  [LOLOS] stop -> ARMED, PWM mati, relai tetap
+    > ctrl pi                OK
+      E,3710,INFO,CTRL,1.00
+  [LOLOS] ctrl pi diterima di ARMED
+    > cl                     OK
+      E,3712,STATE,RUN_CL
+  [LOLOS] PI dari Vo sisa: kembali ke 150 V (150.01)
+  [INFO ] restart PI dari C2 bermuatan (Vo awal ~turun dari 150 V selama 300 ms): iL1 puncak 12.58 A
+    > stop                   OK
+      E,6712,STATE,ARMED
+    > ctrl mpso              OK
+      E,6714,INFO,CTRL,2.00
+    > cl                     OK
+      E,6716,STATE,RUN_CL
+  [LOLOS] pindah ke MPSO-PI: 150 V (150.01)
+    > stop                   OK
+      E,9716,STATE,ARMED
+    > ctrl hinf              OK
+      E,9718,INFO,CTRL,0.00
+    > cl                     OK
+      E,9720,STATE,RUN_CL
+  [LOLOS] kembali ke H-inf: 150 V (149.66), tanpa fault
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== link: USB putus ===
+      E,0,STATE,OFF
+    > ctrl hinf              OK
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+      E,4406,INFO,LINK_USB_PUTUS->DISARM,0.00
+      E,4406,STATE,DISARM
+  [LOLOS] USB putus -> PWM mati setelah 1000.0 ms (1000 ms)
+  [LOLOS] event LINK_USB_PUTUS tercatat
+      E,4437,STATE,OFF
+  [LOLOS] lanjut DISARM -> OFF
+    > arm                    OK
+      E,4438,TOLAK,link_USB_tidak_aktif
+  [LOLOS] arm ditolak saat link mati
+      E,0,STATE,OFF
+    > link keep              OK
+    > ctrl hinf              OK
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+  [LOLOS] link keep: tetap jalan saat USB putus (pilihan eksplisit)
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== k2_fail: K2 lepas saat jalan / tidak menutup saat arm ===
+      E,0,STATE,OFF
+    > ctrl hinf              OK
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+      E,3406,FAULT,VO_PLAUS,0.000
+      E,3406,STATE,FAULT,VO_PLAUS
+  [LOLOS] K2 lepas saat 150 V -> trip dalam 0.3 ms (faults 0x200)
+  [INFO ] K2 lepas: Vo SEBENARNYA di C2 naik ke 154.1 V sebelum PWM mati (sensor melihat 0 V)
+  [LOLOS] Vo sebenarnya 154.1 V < 250 V (rating C12 snubber) -- C11/C13 450 V
+      E,0,STATE,OFF
+    > arm                    OK
+      E,5,STATE,ARMING
+      E,5,INFO,ARM_LANGKAH,1.00
+      E,305,INFO,ARM_LANGKAH,2.00
+      E,405,FAULT,ARM,0.048
+      E,405,STATE,FAULT,ARM
+  [LOLOS] K2 tidak menutup saat arm -> F_ARM (400 ms), PWM tidak pernah jalan
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== ol: open-loop T4 (D 0,654), jepit dmax ===
+      E,0,STATE,OFF
+    > arm                    OK
+      E,5,STATE,ARMING
+      E,5,INFO,ARM_LANGKAH,1.00
+      E,305,INFO,ARM_LANGKAH,2.00
+      E,405,STATE,ARMED
+    > ol                     OK
+    > d 0.654                OK
+      E,405,STATE,RUN_OL
+  [LOLOS] OL D 0,654 @135 Ohm tanpa fault
+  [LOLOS] duty OL = 0.6540
+  [INFO ] T4 OL D 0,654 @135 Ohm (set hw): Vo 121.00 V, iL1 7.49 A
+    > d 0.8                  OK
+  [LOLOS] d 0.8 di OL dijepit ke dmax 0.66 (duty 0.6600)
+    > d 0                    OK
+  [LOLOS] d 0 -> ramp turun ke 0
+    > stop                   OK
+      E,11105,STATE,ARMED
+  [LOLOS] stop -> ARMED
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== ol_noload: open-loop tanpa beban ===
+      E,0,STATE,OFF
+    > arm                    OK
+      E,5,STATE,ARMING
+      E,5,INFO,ARM_LANGKAH,1.00
+      E,305,INFO,ARM_LANGKAH,2.00
+      E,405,STATE,ARMED
+    > ol                     OK
+    > d 0.5                  OK
+      E,405,STATE,RUN_OL
+      E,2414,FAULT,NOLOAD,0.001
+      E,2414,STATE,FAULT,NOLOAD
+  [LOLOS] OL tanpa beban -> trip (NOLOAD) setelah 2009 ms
+  [INFO ] OL tanpa beban: Vo puncak 45.7 V sebelum trip
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== pwmtest: pwmtest T1/T2, K1 lengket ===
+      E,0,STATE,OFF
+    > pwmtest                OK
+      E,5,TOLAK,Vin_ada_saat_pwmtest(matikan_PSU_atau_pwmtest_force)
+  [LOLOS] pwmtest ditolak saat PSU 18 V terpasang
+    > pwmtest                OK
+    > d 0.5                  OK
+      E,12,STATE,PWMTEST
+  [LOLOS] pwmtest (Vin 0): PWM 0,5 dengan K1/K2 terbuka
+  [LOLOS] tidak ada daya ke power stage selama pwmtest
+    > d 0.85                 OK
+  [LOLOS] pwmtest boleh sampai 0,85 (duty 0.8500)
+      E,8012,FAULT,RELAY,18.003
+      E,8012,STATE,FAULT,RELAY
+  [LOLOS] PSU dinyalakan saat pwmtest -> F_RELAY dalam 0.1 ms
+      E,0,STATE,OFF
+    > pwmtest force          OK (force: Vin boleh ada, PASTIKAN K1 tidak lengket)
+    > d 0.5                  OK
+      E,55,STATE,PWMTEST
+  [INFO ] BATASAN: pwmtest force + K1 lengket: TIDAK TERDETEKSI setelah -1.0 ms, Vo C2 naik ke 69.3 V tanpa terlihat sensor. Karena itu default pwmtest menolak Vin > 2 V; force hanya bila K1 sudah dicek dengan multimeter.
+      E,0,STATE,OFF
+    > pwmtest force          OK (force: Vin boleh ada, PASTIKAN K1 tidak lengket)
+    > d 0.654                OK
+      E,5,STATE,PWMTEST
+  [LOLOS] pwmtest force normal (Vin 18 V, relai sehat): jalan tanpa trip palsu
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== sim: mode SIM on-chip ===
+      E,0,STATE,OFF
+    > sim par hw             OK
+    > sim on                 OK
+      E,5,INFO,SIM,1.00
+    > arm                    OK
+      E,7,STATE,ARMING
+      E,7,INFO,ARM_LANGKAH,1.00
+      E,307,INFO,ARM_LANGKAH,2.00
+      E,407,STATE,ARMED
+    > v 150                  OK
+    > cl                     OK
+      E,407,STATE,RUN_CL
+    ST state=RUN_CL ctrl=HINF vo=149.65 vin=18.00 iin=12.503 iout=1.1085 T=25.0 d=0.7021 vref=150.00/150.00 K1=1 K2=1 fan=1 sim=1 link=1 fault=- first=- ovr=0 cap=0
+  [LOLOS] SIM: pin relai fisik tetap LOW
+  [LOLOS] SIM: closed-loop di model on-chip mencapai ~150 V
+  [LOLOS] SIM: power stage asli tidak menerima daya
+      E,1907,FAULT,SIM_REAL,0.000
+      E,1907,STATE,FAULT,SIM_REAL
+  [INFO ] SIM + K1 lengket: F_SIM_REAL setelah 0.6 ms
+  [LOLOS] SIM berhenti bila ADC asli melihat daya (faults 0x8000)
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== inrush: arus start dengan vr 6000 V/s (info) ===
+      E,0,STATE,OFF
+    > vr 6000                OK (PERINGATAN: ramp cepat menaikkan arus start)
+    > arm                    OK
+      E,5,STATE,ARMING
+      E,5,INFO,ARM_LANGKAH,1.00
+      E,305,INFO,ARM_LANGKAH,2.00
+      E,405,STATE,ARMED
+    > v 150                  OK
+    > cl                     OK
+      E,405,STATE,RUN_CL
+  [INFO ] vr 6000 V/s (= MIL): iL1 puncak saat start 14.82 A, faults 0x0
+  [LOLOS] dicatat saja
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== arm_brown: sumber jatuh saat ARMING ===
+      E,0,STATE,OFF
+    > arm                    OK
+      E,5,STATE,ARMING
+      E,5,INFO,ARM_LANGKAH,1.00
+      E,305,FAULT,ARM,3.006
+      E,305,STATE,FAULT,ARM
+  [LOLOS] sumber jatuh saat ARMING -> F_ARM (state FAULT)
+  [LOLOS] K2 tidak pernah ditutup
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== disarm_hv: disarm dari 150 V ===
+      E,0,STATE,OFF
+    > ctrl hinf              OK
+      E,5,INFO,CTRL,0.00
+    > arm                    OK
+      E,6,STATE,ARMING
+      E,6,INFO,ARM_LANGKAH,1.00
+      E,306,INFO,ARM_LANGKAH,2.00
+      E,406,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,406,STATE,RUN_CL
+    > disarm                 OK
+      E,3406,STATE,DISARM
+      E,3438,STATE,OFF
+  [LOLOS] disarm dari 150 V -> OFF
+  [INFO ] disarm dari 150 V: K1 buka 20.1 ms, K2 buka 32 ms, Vo saat K2 dibuka 30.1 V
+  [LOLOS] K2 dibuka saat Vo < 30 V
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== io: antrean perintah, raw, capture, telemetri ===
+      E,0,STATE,OFF
+  [LOLOS] antrean 16 slot: 15 diterima, 15 ditolak 'antrean penuh', tidak crash
+      E,5,INFO,TRIG,0.00
+      E,5,INFO,TRIG,0.00
+      E,5,INFO,TRIG,0.00
+      E,5,INFO,TRIG,0.00
+      E,5,INFO,TRIG,0.00
+      E,5,INFO,TRIG,0.00
+      E,5,INFO,TRIG,0.00
+      E,5,INFO,TRIG,0.00
+      E,5,INFO,TRIG,0.00
+      E,5,INFO,TRIG,0.00
+      E,5,INFO,TRIG,0.00
+      E,5,INFO,TRIG,0.00
+      E,5,INFO,TRIG,0.00
+      E,5,INFO,TRIG,0.00
+      E,5,INFO,TRIG,0.00
+    > raw 1000               OK (hasil di baris R,...)
+    R,n=1000,vo=0.36/s=0.48/x=0.0173,vin=2234.00/s=1.00/x=18.0029,iin=0.33/s=0.47/x=0.0018,iout=0.33/s=0.47/x=0.0004,temp=2048.00/s=0.00/T=25.0
+  [LOLOS] raw 1000 -> baris R,n=1000,...
+    > ctrl hinf              OK
+      E,210,INFO,CTRL,0.00
+    > arm                    OK
+      E,211,STATE,ARMING
+      E,211,INFO,ARM_LANGKAH,1.00
+      E,511,INFO,ARM_LANGKAH,2.00
+      E,611,STATE,ARMED
+    > v 150.0                OK
+    > cl                     OK
+      E,611,STATE,RUN_CL
+    > cap 20 1               OK capture siap, jendela 409.6 ms
+    > s 5                    OK
+      E,3711,INFO,STEP,155.00
+      E,4038,INFO,CAPTURE_SELESAI,4096.00
+  [LOLOS] capture selesai setelah step
+    > capdump                OK
+  [LOLOS] capdump: 4097 panggilan (header+sampel 0, 4096 sampel, END)
+  [INFO ] capture S1: Vo maks di buffer 155.59 V
+    > tel 100                OK
+    T,1000,RUN_CL,HINF,126,155.00,120.94,18.00,9.920,0.8957,25.0,0.5750,0.00,155.60,-,0.00,0.00,0,0,0
+  [LOLOS] telemetri T,... 20 kolom (19 koma)
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+=== cal: perintah kalibrasi ===
+      E,0,STATE,OFF
+    > cal vo 0.05 0          OK (tidak tersimpan setelah reset; salin ke qbc_config.h)
+  [LOLOS] cal vo 0,05 (dekat nominal 0,0484) diterima
+    > cal vo 0.0217 0        ERR a menyimpang >50% dari skematik, cek ulang
+  [LOLOS] cal vo dengan skala v1 (88,96/4095 = 0,0217) ditolak (>50 % dari skematik)
+    > arm                    OK
+      E,5,STATE,ARMING
+      E,5,INFO,ARM_LANGKAH,1.00
+      E,305,INFO,ARM_LANGKAH,2.00
+      E,405,STATE,ARMED
+  [LOLOS] cal ditolak saat tidak OFF
+  [LOLOS] invarian keselamatan dijaga di setiap tick
+
+TOTAL: 30 uji, 193 cek, 0 gagal
