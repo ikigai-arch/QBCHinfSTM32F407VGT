@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+build/
+MDK-ARM/qbc_v2/
+MDK-ARM/*.uvguix.*
+MDK-ARM/*.uvoptx
+MDK-ARM/RTE/
+log_*.txt
+tel_*.csv
+cap_*.csv
