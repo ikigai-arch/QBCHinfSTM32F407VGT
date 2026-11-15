@@ -27,6 +27,7 @@ Notasi: `> perintah` = ketik di terminal. `E,...` dan `T,...` = keluaran firmwar
 | 0.1 | (Opsional, disarankan) Jalankan harness: buka MSYS2/WSL di `hil_stm32_v2/test_pc`, `make test`. | `TOTAL: 30 uji, 193 cek, 0 gagal` dan `HASIL: SEMUA LOLOS` di uji vektor H∞. |
 | 0.2 | Arduino IDE: Board "Generic STM32F4 series", Board part number "Generic F407VGTx", USB support "CDC (generic 'Serial' supersede U(S)ART)", Optimize "Smallest (-Os default)", Upload method "STM32CubeProgrammer (SWD)" atau DFU. Buka `hil_stm32_v2.ino`, **Verify**. | Kompilasi tanpa error. Ukuran sekitar 62 kB flash / 45 kB RAM (versi 0.9.0 terkompilasi 61,5 kB / 45 kB dengan core 3.1.0). Peringatan dari file core boleh ada; peringatan dari file `qbc_*`, `ctrl_mux`, `hw_f407` harus nol. |
 | 0.3 | Pastikan folder sketch hanya berisi file v2 (subfolder `test_pc` diabaikan IDE). | – |
+| 0.4 | **Kalau memakai Keil uVision** (Mas Tino): pakai folder `keil_hal_v2/` dan ikuti `keil_hal_v2/README.md` §1–§4 sebagai pengganti 0.2. Serial lewat USB-TTL di PB10/PB11, terminal `tools/qbc_term.py`. Semua langkah berikutnya sama. | Build Keil 0 error. |
 
 > v0.9.1 belum dikompilasi dengan arduino-cli (jaringan sesi tidak bisa mengunduh core). File portabel
 > dan `hw_f407.c` sudah dikompilasi untuk Cortex-M4 dengan clang + header CMSIS/HAL resmi tanpa

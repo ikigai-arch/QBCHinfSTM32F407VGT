@@ -13,8 +13,13 @@
 #include "qbc_config.h"
 #if defined(ARDUINO)
 #include "stm32_def.h"
+#elif defined(USE_HAL_DRIVER)
+#include "stm32f4xx_hal.h"          /* keil_hal_v2 (Keil uVision / arm-none-eabi-gcc + HAL) */
 #else
 #include "stm32f4xx.h"
+#endif
+#if defined(ARDUINO) || defined(USE_HAL_DRIVER)
+#define QBC_HAL_CLOCK 1             /* SystemClock_Config() & HAL_RCC_GetPCLK2Freq() tersedia */
 #endif
 
 /* ---------- pin ---------- */
@@ -39,8 +44,9 @@ static int      iwdg_on = 0;
  *  Clock: HSE 8 MHz (DevEBox) -> 168 MHz, USB 48 MHz. Cadangan HSI 16 MHz.
  *  Varian STM32duino "Generic F407VGTx" memakai HSI (toleransi +-1 %): frekuensi PWM T1 bisa
  *  meleset dari 10,00 kHz dan USB di luar spesifikasi (+-0,25 %). Fungsi WEAK dari varian ditimpa.
+ *  Versi Keil (keil_hal_v2): main() memanggil fungsi ini setelah HAL_Init().
  * ====================================================================================== */
-#if defined(ARDUINO)
+#if defined(QBC_HAL_CLOCK)
 void SystemClock_Config(void)
 {
     RCC_OscInitTypeDef osc = {0};
@@ -141,7 +147,7 @@ void hw_init(void)
     /* --- TIM1 --- */
     RCC->APB2ENR |= RCC_APB2ENR_TIM1EN | RCC_APB2ENR_ADC1EN;
     (void)RCC->APB2ENR;
-#if defined(ARDUINO)
+#if defined(QBC_HAL_CLOCK)
     pclk2 = HAL_RCC_GetPCLK2Freq();
 #else
     pclk2 = 84000000u;

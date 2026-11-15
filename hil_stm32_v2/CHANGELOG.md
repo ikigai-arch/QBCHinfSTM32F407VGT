@@ -1,5 +1,13 @@
 # CHANGELOG firmware board QBC
 
+## keil_hal_v2 (15 Nov 2026)
+
+- Folder baru `keil_hal_v2/` untuk Keil uVision (STM32 HAL, USART3 + heartbeat `hb`). `App/` berisi
+  salinan identik file firmware dari folder ini.
+- `hw_f407.c/.h`: `SystemClock_Config()` dan `HAL_RCC_GetPCLK2Freq()` juga aktif bila
+  `USE_HAL_DRIVER` terdefinisi (build Keil). Build Arduino tidak berubah (cabang `ARDUINO` tetap
+  dipilih lebih dulu). Prototipe `SystemClock_Config()` ditambahkan ke `hw_f407.h`.
+
 ## v2 0.9.1 (15 Nov 2026), hasil harness PC
 
 Perubahan setelah 0.9.0 (yang sudah dikompilasi dengan arduino-cli + STM32duino 3.1.0). Semua karena

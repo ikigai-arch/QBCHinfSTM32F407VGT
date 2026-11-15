@@ -31,6 +31,7 @@ uint32_t hw_sysclk(void);
 int      hw_clock_is_hse(void);
 const char *hw_reset_cause(void);    /* dibaca sekali saat boot */
 uint32_t qbc_hw_cycles(void);        /* DWT->CYCCNT */
+void     SystemClock_Config(void);   /* HSE 8 MHz -> 168 MHz (cadangan HSI); Arduino memanggilnya sendiri */
 
 #ifdef __cplusplus
 }
